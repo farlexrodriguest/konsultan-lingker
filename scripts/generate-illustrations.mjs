@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Generator aset visual Konsultan Lingker.
-// - 18 ilustrasi SVG ke public/images/illustrations/ (9 halaman + 7 layanan + umum)
+// - 19 ilustrasi SVG ke public/images/illustrations/ (9 halaman + 7 layanan + 1 sublayanan + umum)
 // - logo (terang + inverse), favicon, og-default.svg + og-default.webp
 // Palet brand: emerald (utama), amber (aksen), zinc (netral).
 // Jalankan: node scripts/generate-illustrations.mjs
@@ -209,6 +209,28 @@ const illustrations = {
     <circle r="30" fill="#fbbf24"/>
     <path d="M-11 0 L -3 9 L 13 -9" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
+  ${leaf(120, 130, 0.7, '#10b981', -15)}`),
+
+  'amdal.svg': wrap(`
+  <rect x="130" y="110" width="210" height="270" rx="16" fill="#ffffff" stroke="#d4d4d7" stroke-width="3"/>
+  <rect x="180" y="80" width="220" height="290" rx="16" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  <rect x="205" y="108" width="120" height="14" rx="7" fill="#022c22"/>
+  ${docLines(230, 112, 150, 4)}
+  <rect x="210" y="210" width="42" height="52" rx="6" fill="#a7f3d0"/>
+  <rect x="232" y="152" width="42" height="74" rx="6" fill="#10b981" opacity="0.8"/>
+  <rect x="284" y="130" width="42" height="62" rx="6" fill="#fbbf24" opacity="0.75"/>
+  <g transform="translate(150 300)">
+    <circle r="30" fill="#fbbf24"/>
+    <path d="M-11 0 L -3 9 L 13 -9" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(445 190)">
+    <circle r="36" fill="none" stroke="#047857" stroke-width="6"/>
+    <circle r="15" fill="#10b981" opacity="0.55"/>
+    <path d="M-12 1 L -4 10 L 12 -10" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <rect x="360" y="270" width="120" height="110" rx="14" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  ${docLines(302, 296, 100, 4)}
+  ${shieldCheck(410, 330, 0.85)}
   ${leaf(120, 130, 0.7, '#10b981', -15)}`),
 
   'laboratorium-lingkungan.svg': wrap(`

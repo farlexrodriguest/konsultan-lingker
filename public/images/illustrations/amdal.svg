@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img">
+  <rect width="600" height="450" rx="28" fill="#fafaf9"/>
+
+  <rect x="130" y="110" width="210" height="270" rx="16" fill="#ffffff" stroke="#d4d4d7" stroke-width="3"/>
+  <rect x="180" y="80" width="220" height="290" rx="16" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  <rect x="205" y="108" width="120" height="14" rx="7" fill="#022c22"/>
+  <rect x="230" y="112" width="150" height="7" rx="3.5" fill="#d4d4d8"/><rect x="230" y="128" width="128" height="7" rx="3.5" fill="#d4d4d8"/><rect x="230" y="144" width="106" height="7" rx="3.5" fill="#d4d4d8"/><rect x="230" y="160" width="150" height="7" rx="3.5" fill="#d4d4d8"/>
+  <rect x="210" y="210" width="42" height="52" rx="6" fill="#a7f3d0"/>
+  <rect x="232" y="152" width="42" height="74" rx="6" fill="#10b981" opacity="0.8"/>
+  <rect x="284" y="130" width="42" height="62" rx="6" fill="#fbbf24" opacity="0.75"/>
+  <g transform="translate(150 300)">
+    <circle r="30" fill="#fbbf24"/>
+    <path d="M-11 0 L -3 9 L 13 -9" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(445 190)">
+    <circle r="36" fill="none" stroke="#047857" stroke-width="6"/>
+    <circle r="15" fill="#10b981" opacity="0.55"/>
+    <path d="M-12 1 L -4 10 L 12 -10" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <rect x="360" y="270" width="120" height="110" rx="14" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  <rect x="302" y="296" width="100" height="7" rx="3.5" fill="#d4d4d8"/><rect x="302" y="312" width="78" height="7" rx="3.5" fill="#d4d4d8"/><rect x="302" y="328" width="56" height="7" rx="3.5" fill="#d4d4d8"/><rect x="302" y="344" width="100" height="7" rx="3.5" fill="#d4d4d8"/>
+  <g transform="translate(410 330) scale(0.85)">
+  <path d="M0 -34 L28 -22 V 4 C 28 22 14 32 0 38 C -14 32 -28 4 -28 -22 Z" fill="#047857"/>
+  <path d="M-11 2 L -3 11 L 13 -8" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+  <g transform="translate(120 130) rotate(-15) scale(0.7)">
+  <path d="M0 -34 C 22 -18 26 10 0 34 C -26 10 -22 -18 0 -34 Z" fill="#10b981"/>
+  <line x1="0" y1="-20" x2="0" y2="30" stroke="#022c22" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round"/>
+</g>
+</svg>

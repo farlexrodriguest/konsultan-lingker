@@ -10,7 +10,7 @@ keywords:
   - layanan konsultan lingkungan
   - jasa pengujian lingkungan
 pubDate: 2026-10-17T02:04:00Z
-updatedDate: "2026-10-18T15:35:13Z"
+updatedDate: "2026-10-18T20:04:20Z"
 draft: false
 blocks:
   - component: page-header
