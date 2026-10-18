@@ -2,12 +2,13 @@
 id: 100
 ulid: "01M58K7DJ34TF20D938V9DEC3Y"
 type: article
+schemaType: "Article"
 slug: tips-memilih-metode-uji-air-limbah
 title: "Tips Memilih Metode Uji Air Limbah"
 description: "Panduan memilih metode pengujian air limbah yang tepat agar hasil laboratorium akurat dan sesuai dengan regulasi lingkungan yang berlaku."
 draft: false
 pubDate: 2025-10-19T09:00:00Z
-updatedDate: "2026-10-18T23:47:48Z"
+updatedDate: "2026-10-18T23:57:12Z"
 image: "/images/illustrations/uji-air-limbah.svg"
 imageAlt: "Analisis air limbah di laboratorium"
 relatedType: service
