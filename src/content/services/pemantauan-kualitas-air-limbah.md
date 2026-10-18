@@ -5,8 +5,9 @@ type: service
 slug: pemantauan-kualitas-air-limbah
 title: "Pemantauan Kualitas Air Limbah"
 description: "Pemantauan berkala kualitas air limbah keluaran: perencanaan sampling, pengambilan sampel, pengujian laboratorium, dan rekap hasil untuk pelaporan."
+serviceArea: ["Indonesia"]
 pubDate: 2026-10-18T03:04:00Z
-updatedDate: "2026-10-18T14:22:38Z"
+updatedDate: "2026-10-18T15:35:10Z"
 draft: false
 image: "/images/illustrations/pemantauan-air-limbah.svg"
 imageAlt: "Botol sampel air limbah, pita ukur kertas, dan catatan lapangan"

@@ -5,8 +5,9 @@ type: service
 slug: riksa-uji-k3-lingkungan-kerja
 title: "Riksa Uji K3 Lingkungan Kerja"
 description: "Pemeriksaan dan pengujian faktor fisik, kimia, dan biologi lingkungan kerja: kebisingan, pencahayaan, ventilasi, gas, mikroorganisme, dan higiene sanitasi."
+serviceArea: ["Indonesia"]
 pubDate: 2026-10-18T03:06:00Z
-updatedDate: "2026-10-18T14:58:35Z"
+updatedDate: "2026-10-18T15:35:11Z"
 draft: false
 image: "/images/illustrations/riksa-uji-k3.svg"
 imageAlt: "Petugas memeriksa faktor lingkungan kerja dengan alat ukur"

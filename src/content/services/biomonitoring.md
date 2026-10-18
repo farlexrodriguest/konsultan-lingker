@@ -5,8 +5,9 @@ type: service
 slug: biomonitoring
 title: "Biomonitoring Paparan Bahan Kimia"
 description: "Pengukuran paparan bahan kimia pada pekerja melalui pengujian spesimen: pelarut organik dan logam berat, dengan perlindungan data kesehatan."
+serviceArea: ["Indonesia"]
 pubDate: 2026-10-18T03:08:00Z
-updatedDate: "2026-10-18T15:05:11Z"
+updatedDate: "2026-10-18T15:35:06Z"
 draft: false
 image: "/images/illustrations/biomonitoring.svg"
 imageAlt: "Tabung spesimen berlabel bersama formulir dan catatan pengambilan sampel"

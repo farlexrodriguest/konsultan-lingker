@@ -5,8 +5,9 @@ type: service
 slug: konsultasi-perizinan-lingkungan
 title: "Konsultasi dan Perizinan Lingkungan"
 description: "Pendampingan penyusunan dokumen lingkungan dan pengurusan persetujuan: AMDAL, UKL–UPL, SPPL, ANDALALIN, persetujuan teknis, hingga SLO."
+serviceArea: ["Indonesia"]
 pubDate: 2026-10-18T03:00:00Z
-updatedDate: 2026-10-18T03:01:00Z
+updatedDate: "2026-10-18T15:35:08Z"
 draft: false
 image: "/images/illustrations/perizinan-lingkungan.svg"
 imageAlt: "Dokumen lingkungan yang ditandai tanda verifikasi dan cap persetujuan"

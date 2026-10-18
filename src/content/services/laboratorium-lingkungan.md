@@ -5,8 +5,9 @@ type: service
 slug: laboratorium-lingkungan
 title: "Laboratorium Lingkungan"
 description: "Pengujian sampel lingkungan melalui mitra laboratorium: air, udara, emisi, kebisingan, getaran, tanah, dan biota dengan laporan terdokumentasi."
+serviceArea: ["Indonesia"]
 pubDate: 2026-10-18T03:02:00Z
-updatedDate: "2026-10-18T14:09:36Z"
+updatedDate: "2026-10-18T15:35:09Z"
 draft: false
 image: "/images/illustrations/laboratorium-lingkungan.svg"
 imageAlt: "Labu ukur, botol reagen, dan botol sampel untuk pengujian lingkungan"

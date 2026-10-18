@@ -5,8 +5,9 @@ type: service
 slug: greenship-building-assessment
 title: "Pengujian Pendukung Bangunan Hijau Greenship"
 description: "Pengujian kualitas air, udara dalam ruang, kenyamanan termal, visual, dan akustik sebagai pendukung penilaian bangunan hijau (Greenship)."
+serviceArea: ["Indonesia"]
 pubDate: 2026-10-18T03:10:00Z
-updatedDate: "2026-10-18T15:15:57Z"
+updatedDate: "2026-10-18T15:35:07Z"
 draft: false
 image: "/images/illustrations/greenship.svg"
 imageAlt: "Gedung bertingkat dengan daftar titik pengukuran kenyamanan dalam ruang"

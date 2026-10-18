@@ -26,6 +26,7 @@ const serviceJsonLd = JSON.stringify({
   url: serviceUrl,
   mainEntityOfPage: { '@type': 'WebPage', '@id': `${serviceUrl}#webpage` },
   serviceType: pageTitle,
+  ...(service.data.serviceArea ? { areaServed: service.data.serviceArea } : {}),
   provider: {
     '@type': 'Organization',
     '@id': `${siteUrl}/#organization`,

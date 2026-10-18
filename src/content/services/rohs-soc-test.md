@@ -5,8 +5,9 @@ type: service
 slug: rohs-soc-test
 title: "Pengujian RoHS dan SoC"
 description: "Pengujian bahan berbahaya pada produk dan material, termasuk logam berat, senyawa bromin, dan ftalat, dengan lingkup menurut material serta pasar tujuan."
+serviceArea: ["Indonesia"]
 pubDate: 2026-10-18T03:12:00Z
-updatedDate: "2026-10-18T15:27:00Z"
+updatedDate: "2026-10-18T15:35:12Z"
 draft: false
 image: "/images/illustrations/rohs-soc.svg"
 imageAlt: "Komponen elektronik dan sampel material yang disiapkan untuk pengujian bahan berbahaya"
