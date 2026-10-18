@@ -39,7 +39,6 @@ export function organizationSchema(base: string) {
     image: abs(base, '/images/og-default.webp'),
     email: site.email,
     telephone: site.phoneDisplay,
-    about: site.description,
     address: {
       '@type': 'PostalAddress',
       streetAddress: site.address.street,
