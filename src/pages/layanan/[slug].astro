@@ -5,7 +5,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
 import BlockRenderer from '../../components/blocks/BlockRenderer.astro';
 import RelatedArticles from '../../components/shared/RelatedArticles.astro';
 import { ui } from '../../config/ui.ts';
-import { faqFromBlocks, faqPageSchema, serviceSchema } from '../../utils/schema.ts';
+import { serviceSchema } from '../../utils/schema.ts';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -18,8 +18,41 @@ const { service } = Astro.props as { service: CollectionEntry<'services'> };
 const articles = await getCollection('articles');
 const base = Astro.site?.toString().replace(/\/$/, '') || Astro.url.origin;
 const pagePath = `/layanan/${service.data.slug}/`;
+const siteUrl = base;
+const serviceUrl = new URL(pagePath, siteUrl).toString();
 // Tipe utama = Service (dirujuk WebPage.mainEntity); FAQPage bila ada blok `faq`.
-const faqItems = faqFromBlocks(service.data.blocks);
+const faqBlock = service.data.blocks.find((block) => block.component === 'faq');
+const faqItems = faqBlock && 'items' in faqBlock ? faqBlock.items : [];
+
+const stepsBlock = service.data.blocks.find((block) => block.component === 'steps');
+const howToSteps = stepsBlock && 'items' in stepsBlock ? stepsBlock.items : [];
+
+const faqJsonLd = faqItems.length > 0 ? {
+  '@type': 'FAQPage',
+  '@id': `${serviceUrl}#faq`,
+  inLanguage: 'id-ID',
+  mainEntity: faqItems.map((item: { question: string; answer: string }) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+} : null;
+
+const howToJsonLd = howToSteps.length > 0 ? {
+  '@type': 'HowTo',
+  '@id': `${serviceUrl}#howto`,
+  name: stepsBlock?.heading ?? 'Cara Melakukan Proses',
+  inLanguage: 'id-ID',
+  step: howToSteps.map((item, index) => ({
+    '@type': 'HowToStep',
+    position: index + 1,
+    name: item.title,
+    text: item.text,
+  })),
+} : null;
 const jsonLd = [
   serviceSchema({
     base,
@@ -29,7 +62,8 @@ const jsonLd = [
     image: service.data.image,
     serviceArea: service.data.serviceArea,
   }),
-  ...(faqItems.length ? [faqPageSchema({ base, path: pagePath, items: faqItems })] : []),
+  ...(faqJsonLd ? [faqJsonLd] : []),
+  ...(howToJsonLd ? [howToJsonLd] : []),
 ];
 ---
 <ServiceLayout service={service} jsonLd={jsonLd} mainEntityId={`${base}${pagePath}#service`}>
