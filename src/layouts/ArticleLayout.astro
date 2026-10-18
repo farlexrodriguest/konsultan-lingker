@@ -5,6 +5,7 @@ import BaseLayout from './BaseLayout.astro';
 import SiteHeader from '../components/shared/SiteHeader.astro';
 import SiteFooter from '../components/shared/SiteFooter.astro';
 import ArticlePreviousArticles from '../components/shared/ArticlePreviousArticles.astro';
+import GuideCta from '../components/shared/GuideCta.astro';
 import { ui } from '../config/ui.ts';
 import '../styles/global.css';
 const { article, headings = [] } = Astro.props as {
@@ -89,6 +90,20 @@ const faqJsonLd = faqBlock && 'items' in faqBlock ? {
   })),
 } : null;
 
+const stepsBlock = article.data.blocks.find((block) => block.component === 'steps');
+const howToJsonLd = stepsBlock && 'items' in stepsBlock ? {
+  '@type': 'HowTo',
+  '@id': `${articleUrl}#howto`,
+  name: stepsBlock.heading,
+  inLanguage: 'id-ID',
+  step: stepsBlock.items.map((item, index) => ({
+    '@type': 'HowToStep',
+    position: index + 1,
+    name: item.title,
+    text: item.text,
+  })),
+} : null;
+
 const utcIso = (date: Date) => date.toISOString().replace(/\.\d{3}Z$/, 'Z');
 const articleJsonLd = JSON.stringify({
   '@context': 'https://schema.org',
@@ -117,7 +132,8 @@ const articleJsonLd = JSON.stringify({
     },
     ...(relatedServiceJsonLd ? [relatedServiceJsonLd] : []),
     ...(categoriesJsonLd ? [categoriesJsonLd] : []),
-    ...(faqJsonLd ? [faqJsonLd] : [])
+    ...(faqJsonLd ? [faqJsonLd] : []),
+    ...(howToJsonLd ? [howToJsonLd] : [])
   ]
 }).replace(/</g, '\\u003c');
 ---
@@ -171,17 +187,9 @@ const articleJsonLd = JSON.stringify({
         </div>
       </header>
       <div class="prose-content [&>h2]:scroll-mt-28 [&>h3]:scroll-mt-24"><slot /></div>
+      <GuideCta title={pageTitle} relatedServiceHref={relatedServiceHref} guideCtaText={articleCtaText} guideCtaButton={articleCtaButton} />
       <slot name="related" />
     </article>
   </main>
-  <section class="bg-emerald-950 text-white">
-    <div class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 sm:flex-row sm:items-center sm:justify-between lg:py-12">
-      <div class="max-w-2xl">
-        <h2 class="font-display text-xl font-extrabold tracking-tight text-white">{ui.article.ctaHeading}</h2>
-        <p class="mt-2 leading-7 text-emerald-100/85">{articleCtaText}</p>
-      </div>
-      <a href={relatedServiceHref} class="inline-flex shrink-0 items-center justify-center rounded-full bg-amber-400 px-6 py-3 text-sm font-bold text-emerald-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400">{articleCtaButton}</a>
-    </div>
-  </section>
   <SiteFooter serviceTitle={footerServiceTitle} />
 </BaseLayout>
