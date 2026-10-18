@@ -13,7 +13,7 @@ keywords:
   - AMDAL
   - UKL UPL
 pubDate: 2026-10-17T02:00:00Z
-updatedDate: 2026-10-17T02:01:00Z
+updatedDate: "2026-10-18T14:09:38Z"
 draft: false
 socialImage: "/images/social/home-hero.webp"
 blocks:
