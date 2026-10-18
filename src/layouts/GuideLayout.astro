@@ -7,6 +7,7 @@ import SiteFooter from '../components/shared/SiteFooter.astro';
 import ArticlePreviousArticles from '../components/shared/ArticlePreviousArticles.astro';
 import GuideCta from '../components/shared/GuideCta.astro';
 import { ui } from '../config/ui.ts';
+import { serviceSchema } from '../utils/schema.ts';
 import '../styles/global.css';
 const { guide, headings = [] } = Astro.props as {
   guide: CollectionEntry<'guides'>;
@@ -41,6 +42,15 @@ if (guide.data.relatedType === 'service' && guide.data.relatedId) {
     relatedServiceHref = `/layanan/${related.data.slug}/`;
     guideCtaText = `Ikuti panduan ${related.data.title} dengan persiapan yang tepat, lalu diskusikan kebutuhan lokasi Anda bersama tim kami.`;
     guideCtaButton = 'Lihat layanan terkait';
+    relatedServiceJsonLd = serviceSchema({
+      base: siteUrl,
+      slug: related.data.slug,
+      title: related.data.title,
+      description: related.data.description,
+      image: related.data.image,
+      serviceType: related.data.serviceGroup,
+      serviceArea: related.data.serviceArea,
+    });
   }
 }
 const faqBlock = guide.data.blocks.find((block) => block.component === 'faq');
@@ -55,6 +65,20 @@ const faqJsonLd = faqBlock && 'items' in faqBlock ? {
       '@type': 'Answer',
       text: item.answer,
     },
+  })),
+} : null;
+
+const stepsBlock = guide.data.blocks.find((block) => block.component === 'steps');
+const howToJsonLd = stepsBlock && 'items' in stepsBlock ? {
+  '@type': 'HowTo',
+  '@id': `${guideUrl}#howto`,
+  name: stepsBlock.heading,
+  inLanguage: 'id-ID',
+  step: stepsBlock.items.map((item, index) => ({
+    '@type': 'HowToStep',
+    position: index + 1,
+    name: item.title,
+    text: item.text,
   })),
 } : null;
 
@@ -78,6 +102,7 @@ const guideJsonLd = JSON.stringify({
         name: ui.brand.name,
         url: siteUrl,
         ...(guide.data.serviceArea ? { areaServed: guide.data.serviceArea } : {}),
+        ...(relatedServiceJsonLd ? { about: { '@id': relatedServiceJsonLd['@id'] } } : {}),
       },
 
       ...(relatedServiceJsonLd ? { about: { '@id': relatedServiceJsonLd['@id'] } } : {}),
@@ -85,7 +110,8 @@ const guideJsonLd = JSON.stringify({
       url: guideUrl,
     },
     ...(relatedServiceJsonLd ? [relatedServiceJsonLd] : []),
-    ...(faqJsonLd ? [faqJsonLd] : [])
+    ...(faqJsonLd ? [faqJsonLd] : []),
+    ...(howToJsonLd ? [howToJsonLd] : [])
   ]
 }).replace(/</g, '\\u003c');
 ---
