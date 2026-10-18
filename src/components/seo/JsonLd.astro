@@ -1,0 +1,27 @@
+---
+/**
+ * JsonLd — render data schema.org sebagai tag JSON-LD di <head>.
+ *
+ * Props:
+ * - data: satu node atau array node schema.org (dari src/utils/schema.ts).
+ *
+ * Konteks disuntik sentral di sini: satu node -> { "@context", ...node };
+ * banyak node -> { "@context", "@graph": [...] }. JSON-LD tanpa @context
+ * tidak valid sehingga Google mengabaikannya sepenuhnya.
+ *
+ * Nilai `<` di-escape ke \u003c agar aman terhadap `</script>` di dalam data.
+ *
+ * Usage: <JsonLd data={[serviceSchema(...), faqPageSchema(...)]} />
+ */
+interface Props {
+  data: Record<string, unknown> | Record<string, unknown>[];
+}
+const { data } = Astro.props;
+const nodes = Array.isArray(data) ? data : [data];
+const payload =
+  nodes.length === 1
+    ? { '@context': 'https://schema.org', ...nodes[0] }
+    : { '@context': 'https://schema.org', '@graph': nodes };
+const json = JSON.stringify(payload).replace(/</g, '\\u003c');
+---
+<script type="application/ld+json" is:inline set:html={json} />

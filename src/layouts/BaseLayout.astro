@@ -1,7 +1,9 @@
 ---
 import '../styles/global.css';
+import JsonLd from '../components/seo/JsonLd.astro';
 import { ui } from '../config/ui.ts';
-const { title = ui.meta.defaultTitle, description = ui.meta.defaultDescription, canonical, noindex = false, socialImage = ui.meta.defaultImage, pubDate, updatedDate, mainEntityId } = Astro.props as { title?: string; description?: string; canonical?: string; noindex?: boolean; socialImage?: string; pubDate?: Date; updatedDate?: Date; mainEntityId?: string };
+import { breadcrumbSchema, organizationSchema, webPageSchema, webSiteSchema } from '../utils/schema.ts';
+const { title = ui.meta.defaultTitle, description = ui.meta.defaultDescription, canonical, noindex = false, socialImage = ui.meta.defaultImage, pubDate, updatedDate, mainEntityId, jsonLd } = Astro.props as { title?: string; description?: string; canonical?: string; noindex?: boolean; socialImage?: string; pubDate?: Date; updatedDate?: Date; mainEntityId?: string; jsonLd?: Record<string, unknown>[] };
 // Crawler sosial (Facebook, LinkedIn, WhatsApp, X) tidak merender SVG. Gambar non-raster diganti fallback WebP.
 const isRasterImage = /\.(png|jpe?g|webp|gif)$/i.test(socialImage.split(/[?#]/)[0]);
 const resolvedSocialImage = isRasterImage ? socialImage : ui.meta.defaultImage;
@@ -10,9 +12,9 @@ const utcIso = (date: Date) => date.toISOString().replace(/\.\d{3}Z$/, 'Z');
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
 const canonicalUrl = canonical ? new URL(canonical, siteUrl || Astro.url).toString() : new URL(Astro.url.pathname, siteUrl || Astro.url).toString();
 const imageUrl = resolvedSocialImage.startsWith('http') ? resolvedSocialImage : new URL(resolvedSocialImage, siteUrl || Astro.url).toString();
-// Build one canonical BreadcrumbList for every route using this layout.
 const pathname = new URL(canonicalUrl).pathname.replace(/\/+$/, '') || '/';
-const pathSegments = pathname.split('/').filter(Boolean);
+// Node JSON-LD sitewide per halaman: Organization + WebSite (sitewide),
+// WebPage halaman berjalan (...#webpage), dan BreadcrumbList dari canonical.
 const breadcrumbLabels: Record<string, string> = {
   layanan: ui.nav.services,
   panduan: ui.nav.guides,
@@ -21,68 +23,21 @@ const breadcrumbLabels: Record<string, string> = {
   'hubungi-kami': ui.nav.contact,
   'tentang-kami': ui.nav.about,
 };
-const breadcrumbItems = [{ name: ui.nav.home, url: new URL('/', siteUrl || Astro.url).toString() }];
-if (pathSegments.length > 0) {
-  let accumulatedPath = '';
-  for (let index = 0; index < pathSegments.length; index += 1) {
-    const segment = pathSegments[index];
-    accumulatedPath += `/${segment}`;
-    const isLast = index === pathSegments.length - 1;
-    const name = isLast
-      ? title
-      : breadcrumbLabels[segment] ?? segment.replace(/-/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
-    breadcrumbItems.push({
-      name,
-      url: new URL(`${accumulatedPath}/`, siteUrl || Astro.url).toString(),
-    });
-  }
-} else {
-  breadcrumbItems[0] = { name: title, url: canonicalUrl };
-}
-const breadcrumbJsonLd = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: breadcrumbItems.map((item, index) => ({
-    '@type': 'ListItem',
-    position: index + 1,
-    name: item.name,
-    item: item.url,
-  })),
-}).replace(/</g, '\\u003c');
-const pageJsonLd = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${canonicalUrl}#webpage`,
-  name: title,
-  description,
-  inLanguage: 'id-ID',
-  ...(pubDate ? { datePublished: utcIso(pubDate) } : {}),
-  ...(updatedDate ? { dateModified: utcIso(updatedDate) } : {}),
-  url: canonicalUrl,
-  ...(mainEntityId ? { mainEntity: { '@id': mainEntityId } } : {}),
-  isPartOf: { '@id': `${siteUrl || Astro.url.origin}/#website` },
-  about: { '@id': `${siteUrl || Astro.url.origin}/#organization` },
-}).replace(/</g, '\\u003c');
-const siteGraphJsonLd = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${siteUrl || Astro.url.origin}/#organization`,
-      name: ui.brand.name,
-      url: siteUrl || Astro.url.origin,
-      description: ui.meta.defaultDescription,
-    },
-    {
-      '@type': 'WebSite',
-      '@id': `${siteUrl || Astro.url.origin}/#website`,
-      name: ui.meta.defaultTitle,
-      url: siteUrl || Astro.url.origin,
-      inLanguage: ui.locale,
-      publisher: { '@id': `${siteUrl || Astro.url.origin}/#organization` },
-    },
-  ],
-}).replace(/</g, '\\u003c');
+const origin = siteUrl || Astro.url.origin;
+const baseNodes = [
+  organizationSchema(origin),
+  webSiteSchema(origin),
+  webPageSchema({
+    base: origin,
+    url: canonicalUrl,
+    title,
+    description,
+    datePublished: pubDate,
+    dateModified: updatedDate,
+    mainEntityId,
+  }),
+  breadcrumbSchema({ base: origin, pathname, title, homeLabel: ui.nav.home, labels: breadcrumbLabels }),
+];
 ---
 <!doctype html>
 <html lang="id">
@@ -95,9 +50,8 @@ const siteGraphJsonLd = JSON.stringify({
     <meta name="description" content={description} />
     {pubDate && <meta name="datePublished" content={utcIso(pubDate)} />}
     {updatedDate && <meta name="dateModified" content={utcIso(updatedDate)} />}
-    <script type="application/ld+json" set:html={siteGraphJsonLd}></script>
-    <script type="application/ld+json" set:html={pageJsonLd}></script>
-    <script type="application/ld+json" set:html={breadcrumbJsonLd}></script>
+    <JsonLd data={baseNodes} />
+    {jsonLd && jsonLd.length > 0 && <JsonLd data={jsonLd} />}
     {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonicalUrl} />}
     <meta property="og:type" content={Astro.url.pathname.startsWith('/artikel/') && Astro.url.pathname !== '/artikel/' ? 'article' : 'website'} />
     <meta property="og:locale" content="id_ID" />

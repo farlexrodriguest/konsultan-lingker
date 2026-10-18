@@ -1,14 +1,44 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import SiteHeader from '../../components/shared/SiteHeader.astro';
 import SiteFooter from '../../components/shared/SiteFooter.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlockRenderer from '../../components/blocks/BlockRenderer.astro';
+import { collectionPageSchema, itemListSchema } from '../../utils/schema.ts';
 const page = await getEntry('pages', 'layanan');
 if (!page) throw new Error('Missing "layanan" page content entry.');
 if (page.data.draft) throw new Error('Page "layanan" is marked draft but has a statically defined route.');
+// CollectionPage + ItemList dirakit sebagai node terpisah agar keduanya
+// terdeteksi validator; terhubung lewat mainEntity -> ...#itemlist.
+const services = (await getCollection('services'))
+  .filter((service) => !service.data.draft && service.data.status === 'active')
+  .sort((a, b) => a.data.order - b.data.order);
+const base = Astro.site?.toString().replace(/\/$/, '') || Astro.url.origin;
+const pagePath = page.data.canonical ?? '/layanan/';
+const jsonLd = [
+  collectionPageSchema({
+    base,
+    path: pagePath,
+    title: page.data.seoTitle ?? page.data.title,
+    description: page.data.description,
+    hasItems: services.length > 0,
+  }),
+  ...(services.length
+    ? [
+        itemListSchema({
+          base,
+          path: pagePath,
+          name: page.data.title,
+          items: services.map((service) => ({
+            name: service.data.title,
+            url: `${base}/layanan/${service.data.slug}/`,
+          })),
+        }),
+      ]
+    : []),
+];
 ---
-<BaseLayout title={page.data.seoTitle ?? page.data.title} description={page.data.description} socialImage={page.data.socialImage} canonical={page.data.canonical} noindex={page.data.noindex} pubDate={page.data.pubDate} updatedDate={page.data.updatedDate}>
+<BaseLayout title={page.data.seoTitle ?? page.data.title} description={page.data.description} socialImage={page.data.socialImage} canonical={page.data.canonical} noindex={page.data.noindex} pubDate={page.data.pubDate} updatedDate={page.data.updatedDate} jsonLd={jsonLd}>
   <SiteHeader />
   <main id="main-content" class="mx-auto max-w-7xl space-y-8 px-5 py-12 sm:py-16">
     {page.data.blocks.map((block) => <BlockRenderer block={block} />)}

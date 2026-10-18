@@ -4,24 +4,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BlockRenderer from '../components/blocks/BlockRenderer.astro';
 import SiteHeader from '../components/shared/SiteHeader.astro';
 import SiteFooter from '../components/shared/SiteFooter.astro';
+import { faqFromBlocks, faqPageSchema } from '../utils/schema.ts';
 const page = await getEntry('pages', 'faq');
 if (!page) throw new Error('Missing "faq" page content entry.');
 if (page.data.draft) throw new Error('Page "faq" is marked draft but has a statically defined route.');
-const faqBlocks = page.data.blocks.filter((block) => block.component === 'faq');
-const faqJsonLd = faqBlocks.length > 0 ? JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  '@id': new URL('/faq/', Astro.site ?? Astro.url).toString() + '#faq',
-  inLanguage: 'id-ID',
-  mainEntity: faqBlocks.flatMap((block) => block.items.map((item) => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: { '@type': 'Answer', text: item.answer },
-  }))),
-}).replace(/</g, '\\u003c') : undefined;
+const base = Astro.site?.toString().replace(/\/$/, '') || Astro.url.origin;
+const faqItems = faqFromBlocks(page.data.blocks);
+const jsonLd = faqItems.length ? [faqPageSchema({ base, path: '/faq/', items: faqItems })] : [];
 ---
-<BaseLayout title={page.data.seoTitle ?? page.data.title} description={page.data.description} socialImage={page.data.socialImage} canonical={page.data.canonical} noindex={page.data.noindex} pubDate={page.data.pubDate} updatedDate={page.data.updatedDate} mainEntityId={new URL('/faq/', Astro.site ?? Astro.url).toString() + '#faq'}>
-  <script slot="head" type="application/ld+json" set:html={faqJsonLd}></script>
+<BaseLayout title={page.data.seoTitle ?? page.data.title} description={page.data.description} socialImage={page.data.socialImage} canonical={page.data.canonical} noindex={page.data.noindex} pubDate={page.data.pubDate} updatedDate={page.data.updatedDate} mainEntityId={`${base.replace(/\/+$/, '')}/faq/#faq`} jsonLd={jsonLd}>
   <SiteHeader />
   <main id="main-content" class="mx-auto max-w-7xl space-y-8 px-5 py-12 sm:py-16">
     {page.data.blocks.map((block) => <BlockRenderer block={block} />)}

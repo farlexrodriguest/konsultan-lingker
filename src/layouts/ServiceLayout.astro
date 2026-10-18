@@ -6,7 +6,7 @@ import SiteFooter from '../components/shared/SiteFooter.astro';
 import { ui } from '../config/ui.ts';
 import '../styles/global.css';
 
-const { service } = Astro.props as { service: CollectionEntry<'services'> };
+const { service, jsonLd } = Astro.props as { service: CollectionEntry<'services'>; jsonLd?: Record<string, unknown>[] };
 const pageTitle = service.data.title;
 const description = service.data.description;
 const canonical = `/layanan/${service.data.slug}/`;
@@ -16,46 +16,8 @@ const serviceImageSource = service.data.socialImage ?? ui.meta.defaultImage;
 const isRasterImage = /\.(png|jpe?g|webp|gif)$/i.test(serviceImageSource.split(/[?#]/)[0]);
 const serviceImage = new URL(isRasterImage ? serviceImageSource : ui.meta.defaultImage, siteUrl).toString();
 const utcIso = (date: Date) => date.toISOString().replace(/\.\d{3}Z$/, 'Z');
-const faqBlock = service.data.blocks.find((block) => block.component === 'faq');
-const faqJsonLd = faqBlock && 'items' in faqBlock ? {
-  '@type': 'FAQPage',
-  '@id': `${serviceUrl}#faq`,
-  inLanguage: 'id-ID',
-  mainEntity: faqBlock.items.map((item: { question: string; answer: string }) => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: item.answer,
-    },
-  })),
-} : null;
-const serviceJsonLd = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Service',
-      '@id': `${serviceUrl}#service`,
-      name: pageTitle,
-      description,
-      image: [serviceImage],
-      url: serviceUrl,
-      mainEntityOfPage: { '@type': 'WebPage', '@id': `${serviceUrl}#webpage` },
-      serviceType: pageTitle,
-      ...(service.data.serviceArea ? { areaServed: service.data.serviceArea } : {}),
-      provider: {
-        '@type': 'Organization',
-        '@id': `${siteUrl}/#organization`,
-        name: ui.brand.name,
-        url: siteUrl,
-      },
-    },
-    ...(faqJsonLd ? [faqJsonLd] : [])
-  ]
-}).replace(/</g, '\\u003c');
 ---
-<BaseLayout title={pageTitle} description={description} canonical={canonical} socialImage={service.data.socialImage ?? ui.meta.defaultImage} imageAlt={service.data.image ? service.data.imageAlt : ui.article.socialImageAlt} pubDate={service.data.pubDate} updatedDate={service.data.updatedDate} mainEntityId={`${serviceUrl}#service`}>
-  <script slot="head" type="application/ld+json" set:html={serviceJsonLd}></script>
+<BaseLayout title={pageTitle} description={description} canonical={canonical} socialImage={service.data.socialImage ?? ui.meta.defaultImage} imageAlt={service.data.image ? service.data.imageAlt : ui.article.socialImageAlt} pubDate={service.data.pubDate} updatedDate={service.data.updatedDate} mainEntityId={`${serviceUrl}#service`} jsonLd={jsonLd}>
   <SiteHeader />
   <main id="main-content" class="mx-auto max-w-7xl px-5 py-10 sm:py-12 lg:py-14">
     <article class="prose-content min-w-0">

@@ -1,14 +1,42 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import SiteHeader from '../../components/shared/SiteHeader.astro';
 import SiteFooter from '../../components/shared/SiteFooter.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlockRenderer from '../../components/blocks/BlockRenderer.astro';
+import { collectionPageSchema, itemListSchema } from '../../utils/schema.ts';
 const page = await getEntry('pages', 'artikel');
 if (!page) throw new Error('Missing "artikel" page content entry.');
 if (page.data.draft) throw new Error('Page "artikel" is marked draft but has a statically defined route.');
+// CollectionPage + ItemList dirakit sebagai node terpisah; ItemList hanya
+// bila ada artikel terbit.
+const published = (await getCollection('articles')).filter((entry) => !entry.data.draft);
+const base = Astro.site?.toString().replace(/\/$/, '') || Astro.url.origin;
+const pagePath = page.data.canonical ?? '/artikel/';
+const jsonLd = [
+  collectionPageSchema({
+    base,
+    path: pagePath,
+    title: page.data.seoTitle ?? page.data.title,
+    description: page.data.description,
+    hasItems: published.length > 0,
+  }),
+  ...(published.length
+    ? [
+        itemListSchema({
+          base,
+          path: pagePath,
+          name: page.data.title,
+          items: published.map((article) => ({
+            name: article.data.title,
+            url: `${base}/artikel/${article.data.slug}/`,
+          })),
+        }),
+      ]
+    : []),
+];
 ---
-<BaseLayout title={page.data.seoTitle ?? page.data.title} description={page.data.description} socialImage={page.data.socialImage} canonical={page.data.canonical} noindex={page.data.noindex} pubDate={page.data.pubDate} updatedDate={page.data.updatedDate}>
+<BaseLayout title={page.data.seoTitle ?? page.data.title} description={page.data.description} socialImage={page.data.socialImage} canonical={page.data.canonical} noindex={page.data.noindex} pubDate={page.data.pubDate} updatedDate={page.data.updatedDate} jsonLd={jsonLd}>
   <SiteHeader />
   <main id="main-content" class="mx-auto max-w-7xl space-y-8 px-5 py-12 sm:py-16">
     {page.data.blocks.map((block) => <BlockRenderer block={block} />)}

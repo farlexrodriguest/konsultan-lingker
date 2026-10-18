@@ -5,6 +5,7 @@ import ServiceLayout from '../../layouts/ServiceLayout.astro';
 import BlockRenderer from '../../components/blocks/BlockRenderer.astro';
 import RelatedArticles from '../../components/shared/RelatedArticles.astro';
 import { ui } from '../../config/ui.ts';
+import { faqFromBlocks, faqPageSchema, serviceSchema } from '../../utils/schema.ts';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -15,8 +16,23 @@ export async function getStaticPaths() {
 
 const { service } = Astro.props as { service: CollectionEntry<'services'> };
 const articles = await getCollection('articles');
+const base = Astro.site?.toString().replace(/\/$/, '') || Astro.url.origin;
+const pagePath = `/layanan/${service.data.slug}/`;
+// Tipe utama = Service (dirujuk WebPage.mainEntity); FAQPage bila ada blok `faq`.
+const faqItems = faqFromBlocks(service.data.blocks);
+const jsonLd = [
+  serviceSchema({
+    base,
+    slug: service.data.slug,
+    title: service.data.title,
+    description: service.data.description,
+    image: service.data.image,
+    serviceArea: service.data.serviceArea,
+  }),
+  ...(faqItems.length ? [faqPageSchema({ base, path: pagePath, items: faqItems })] : []),
+];
 ---
-<ServiceLayout service={service}>
+<ServiceLayout service={service} jsonLd={jsonLd} mainEntityId={`${base}${pagePath}#service`}>
   <div class="space-y-6">
     {service.data.blocks.map((block) => <BlockRenderer block={block} />)}
   </div>
