@@ -165,5 +165,16 @@ Inventaris seluruh URL lama, metadata, media, halaman terindeks dan tautan inter
 - Bahasa Inggris diperlukan sejak peluncuran?
 - Siapa penanggung jawab persetujuan konten, regulasi dan tindak lanjut prospek?
 
+## 13. Progress Log
+- **Fase 1 (Migrasi Inti):** Selesai.
+- **Fase 2 (Pendalaman - Layanan P0):** Selesai (8/8 sub-layanan tuntas).
+- **Fase 2 (Pendalaman - Panduan):** Sedang berjalan (2/7 tuntas: *Sampling Air Limbah*, *Data Penawaran Lab*).
+- **Infrastruktur:** CTA ganda (Layanan + WA) implementasi dalam konten; JSON-LD diperkaya (PostalAddress, Organization.about).
+
+## 14. Langkah Selanjutnya (Setelah Break)
+1. Lanjutkan koleksi `guides` (panduan #3: **persiapan uji emisi**).
+2. Lanjut panduan #4 s/d #7.
+3. Implementasi konten koleksi `articles` (setelah panduan selesai).
+
 ## Catatan sumber
 Audit layanan menggunakan halaman beranda, profil, kontak, tujuh halaman layanan dan sebagian halaman berbahasa Inggris dari situs referensi yang disampaikan pemilik proyek. URL, identitas dagang, identitas badan hukum dan kontak sumber tidak direproduksi dalam dokumen ini. Sumber pembanding dicantumkan pada bagian riset. Audit bukan pemeriksaan hukum, sertifikasi, atau crawl menyeluruh.
