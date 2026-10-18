@@ -4,12 +4,6 @@ import path from 'node:path';
 
 const root = process.cwd();
 const collections = ['articles', 'guides', 'pages', 'services'];
-const pagePaths = [
-  'src/content/pages/home.md',
-  'src/content/pages/artikel.md',
-  'src/content/pages/layanan.md',
-  'src/content/pages/panduan.md',
-];
 const gitNames = (args) => execFileSync('git', args, {
   cwd: root,
   encoding: 'utf8',
@@ -49,16 +43,31 @@ async function collectUsedTimestamps() {
 }
 
 const stagedPaths = gitNames(['diff', '--cached', '--name-only', '--diff-filter=ACMR']);
-const changedArticles = stagedPaths.filter(
-  (file) => file.startsWith('src/content/articles/') && file.endsWith('.md'),
+const changedContent = stagedPaths.filter(
+  (file) => file.startsWith('src/content/') && file.endsWith('.md'),
 );
 
-if (changedArticles.length === 0) {
-  console.log('Content dates: no staged article changes; nothing to update.');
+if (changedContent.length === 0) {
+  console.log('Content dates: no staged content changes; nothing to update.');
   process.exit(0);
 }
 
-const filesToUpdate = [...new Set([...changedArticles, ...pagePaths])];
+// Halaman indeks yang menampilkan koleksi tertentu diperbarui bersama konten
+// yang berubah supaya tanggal "terakhir diperbarui" pada listing tetap akurat.
+const listingPages = {
+  'src/content/articles/': ['src/content/pages/artikel.md', 'src/content/pages/home.md'],
+  'src/content/guides/': ['src/content/pages/panduan.md', 'src/content/pages/home.md'],
+  'src/content/services/': ['src/content/pages/layanan.md', 'src/content/pages/home.md'],
+};
+
+const filesToUpdate = new Set(changedContent);
+for (const file of changedContent) {
+  for (const [prefix, listings] of Object.entries(listingPages)) {
+    if (file.startsWith(prefix)) {
+      for (const listing of listings) filesToUpdate.add(listing);
+    }
+  }
+}
 const unstagedTargets = gitNames(['diff', '--name-only', '--', ...filesToUpdate]);
 if (unstagedTargets.length > 0) {
   throw new Error(
@@ -133,4 +142,4 @@ if (missingFiles.length > 0) {
 }
 
 execFileSync('git', ['add', '--', ...filesToUpdate], { cwd: root, stdio: 'inherit' });
-console.log(`Content dates updated with unique timestamps for ${changedArticles.length} article(s) and the home, articles, and services pages; all changes staged.`);
+console.log(`Content dates updated with unique timestamps for ${filesToUpdate.size} content file(s); all changes staged.`);

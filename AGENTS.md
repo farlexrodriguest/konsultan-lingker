@@ -47,7 +47,7 @@ Catatan type-check: `tsc --noEmit` hanya memeriksa berkas `.ts`, bukan frontmatt
 | `src/config/site.ts` | identitas situs (nama, kontak, alamat) |
 | `src/config/ui.ts` | label UI bersama (navigasi, footer, tombol, label blok) |
 | `scripts/check-*.mjs` | gerbang validasi build |
-| `scripts/update-content-dates.mjs` | hook pre-commit: menulis `updatedDate` unik |
+| `scripts/update-content-dates.mjs` | hook pre-commit: menulis `updatedDate` unik untuk semua konten yang berubah |
 | `scripts/generate-illustrations.mjs` | generator aset SVG brand + og-default.webp |
 | `scripts/generate-ulid.mjs` | generator ULID Crockford untuk konten baru |
 

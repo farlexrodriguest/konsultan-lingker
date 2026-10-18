@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Generator aset visual Konsultan Lingker.
-// - 11 ilustrasi SVG ke public/images/illustrations/
+// - 18 ilustrasi SVG ke public/images/illustrations/ (9 halaman + 7 layanan + umum)
 // - logo (terang + inverse), favicon, og-default.svg + og-default.webp
 // Palet brand: emerald (utama), amber (aksen), zinc (netral).
 // Jalankan: node scripts/generate-illustrations.mjs
@@ -194,6 +194,105 @@ const illustrations = {
   ${droplet(375, 180, 1, '#10b981')}
   ${shieldCheck(375, 285, 0.8)}
   ${leaf(170, 130, 0.7, '#10b981', -12)}`),
+
+  // === Ilustrasi layanan (satu SVG unik per halaman layanan) ===
+  'perizinan-lingkungan.svg': wrap(`
+  <rect x="140" y="100" width="220" height="280" rx="16" fill="#ffffff" stroke="#d4d4d7" stroke-width="3"/>
+  <rect x="190" y="70" width="240" height="300" rx="16" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  ${docLines(230, 120, 160, 7)}
+  <g transform="translate(415 200)">
+    <circle r="38" fill="none" stroke="#047857" stroke-width="6"/>
+    <circle r="17" fill="#10b981" opacity="0.55"/>
+    <path d="M-13 1 L -4 11 L 13 -11" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(420 330)">
+    <circle r="30" fill="#fbbf24"/>
+    <path d="M-11 0 L -3 9 L 13 -9" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  ${leaf(120, 130, 0.7, '#10b981', -15)}`),
+
+  'laboratorium-lingkungan.svg': wrap(`
+  <circle cx="290" cy="215" r="118" fill="#ecfdf5"/>
+  ${flask(250, 205, 1.05)}
+  <rect x="330" y="130" width="58" height="92" rx="10" fill="#ffffff" stroke="#047857" stroke-width="4"/>
+  <rect x="340" y="150" width="40" height="44" rx="5" fill="#a7f3d0"/>
+  <rect x="330" y="112" width="60" height="12" rx="5" fill="#022c22"/>
+  ${flask(380, 280, 0.7)}
+  ${droplet(430, 150, 1.1, '#fbbf24')}
+  ${leaf(140, 130, 0.7, '#10b981', -12)}`),
+
+  'pemantauan-air-limbah.svg': wrap(`
+  <rect x="130" y="120" width="330" height="230" rx="18" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  <polyline points="180,280 240,242 300,258 360,204 415,192" fill="none" stroke="#047857" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="240" cy="242" r="8" fill="#047857"/>
+  <circle cx="415" cy="204" r="8" fill="#fbbf24"/>
+  ${droplet(205, 150, 1.15, '#10b981')}
+  <rect x="330" y="130" width="26" height="60" rx="12" fill="#ffffff" stroke="#047857" stroke-width="4"/>
+  ${leaf(128, 300, 0.65, '#10b981', -10)}`),
+
+  'riksa-uji-k3.svg': wrap(`
+  <circle cx="300" cy="210" r="118" fill="#ecfdf5"/>
+  <g transform="translate(262 205)">
+    <path d="M-50 20 a 50 50 0 0 1 100 0 l 9 14 h -118 Z" fill="#fbbf24" stroke="#18181b" stroke-width="4"/>
+    <rect x="-56" y="28" width="118" height="10" rx="5" fill="#022c22"/>
+    <circle cx="0" cy="-44" r="7" fill="#022c22"/>
+  </g>
+  ${shieldCheck(405, 280, 1.05)}
+  <g stroke="#047857" stroke-width="5" stroke-linecap="round">
+    <line x1="165" y1="290" x2="185" y2="288"/>
+    <line x1="160" y1="320" x2="205" y2="300"/>
+  </g>
+  ${leaf(140, 130, 0.7, '#10b981', -14)}`),
+
+  'biomonitoring.svg': wrap(`
+  <circle cx="300" cy="210" r="120" fill="#ecfdf5"/>
+  <g transform="translate(250 205)">
+    <circle cx="0" cy="-30" r="24" fill="#022c22"/>
+    <path d="M-38 66 a 38 38 0 0 1 76 0 Z" fill="#047857"/>
+  </g>
+  ${droplet(395, 165, 1.15, '#10b981')}
+  ${droplet(435, 215, 0.75, '#fbbf24')}
+  <rect x="360" y="270" width="26" height="64" rx="12" fill="#ffffff" stroke="#047857" stroke-width="4"/>
+  ${leaf(140, 300, 0.7, '#10b981', -14)}`),
+
+  'greenship.svg': wrap(`
+  <circle cx="300" cy="215" r="118" fill="#ecfdf5"/>
+  <rect x="215" y="150" width="150" height="180" rx="8" fill="#ffffff" stroke="#047857" stroke-width="4"/>
+  <rect x="196" y="122" width="66" height="14" rx="4" fill="#022c22"/>
+  <rect x="196" y="180" width="34" height="30" rx="4" fill="#a7f3d0"/>
+  <rect x="242" y="180" width="34" height="30" rx="4" fill="#a7f3d0"/>
+  <rect x="292" y="180" width="34" height="30" rx="4" fill="#a7f3d0"/>
+  <rect x="196" y="240" width="34" height="30" rx="4" fill="#a7f3d0"/>
+  <rect x="242" y="180" width="34" height="150" rx="4" fill="#10b981"/>
+  ${leaf(415, 165, 1.05, '#10b981', 8)}
+  <circle cx="425" cy="292" r="26" fill="#fbbf24"/>
+  ${leaf(140, 145, 0.7, '#10b981', -10)}`),
+
+  'rohs-soc.svg': wrap(`
+  <circle cx="300" cy="215" r="118" fill="#ecfdf5"/>
+  <rect x="240" y="160" width="120" height="120" rx="14" fill="#022c22"/>
+  <rect x="262" y="188" width="64" height="64" rx="8" fill="#047857"/>
+  <path d="M282 220 L 298 236 L 322 206" fill="none" stroke="#ecfdf5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <g stroke="#047857" stroke-width="6" stroke-linecap="round">
+    <line x1="205" y1="185" x2="240" y2="185"/>
+    <line x1="205" y1="215" x2="240" y2="215"/>
+    <line x1="205" y1="245" x2="240" y2="245"/>
+    <line x1="360" y1="185" x2="395" y2="185"/>
+    <line x1="360" y1="215" x2="395" y2="215"/>
+    <line x1="360" y1="245" x2="395" y2="245"/>
+  </g>
+  <g stroke="#047857" stroke-width="6" stroke-linecap="round">
+    <line x1="270" y1="130" x2="270" y2="160"/>
+    <line x1="300" y1="130" x2="300" y2="160"/>
+    <line x1="330" y1="130" x2="330" y2="160"/>
+    <line x1="270" y1="310" x2="270" y2="280"/>
+    <line x1="330" y1="310" x2="330" y2="280"/>
+  </g>
+  <g transform="translate(420 300)">
+    <circle r="30" fill="#fbbf24"/>
+    <path d="M-12 0 L -3 10 L 14 -10" fill="none" stroke="#022c22" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  ${leaf(140, 300, 0.7, '#10b981', -14)}`),
 };
 
 const logoLight = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 60" width="300" height="60" role="img" aria-label="Konsultan Lingker">
