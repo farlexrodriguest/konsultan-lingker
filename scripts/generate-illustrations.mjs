@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Generator aset visual Konsultan Lingker.
-// - 23 ilustrasi SVG ke public/images/illustrations/ (9 halaman + 7 layanan + 5 sublayanan + umum)
+// - 24 ilustrasi SVG ke public/images/illustrations/ (9 halaman + 7 layanan + 6 sublayanan + umum)
 // - logo (terang + inverse), favicon, og-default.svg + og-default.webp
 // Palet brand: emerald (utama), amber (aksen), zinc (netral).
 // Jalankan: node scripts/generate-illustrations.mjs
@@ -344,6 +344,39 @@ const illustrations = {
   </g>
   ${droplet(150, 130, 0.8, '#10b981')}
   ${droplet(190, 200, 0.55, '#047857')}`),
+
+  'uji-udara-ambien.svg': wrap(`
+  <circle cx="168" cy="128" r="34" fill="#fbbf24" opacity="0.85"/>
+  <path d="M300 128 a26 26 0 0 1 0 -0.01 Z M286 146 a30 30 0 0 1 44 -22 a24 24 0 0 1 46 8 a22 22 0 0 1 -6 43 L 292 175 a20 20 0 0 1 -6 -29 Z" fill="#ffffff" opacity="0.95"/>
+  <path d="M330 108 q14 -20 34 -12 q6 2 8 6" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+  <path d="M366 84 q18 -14 36 -6" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+  <path d="M240 132 q12 -16 30 -10" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <rect x="196" y="216" width="70" height="130" rx="12" fill="#ffffff" stroke="#047857" stroke-width="3"/>
+  <rect x="208" y="128" width="46" height="30" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="3"/>
+  <circle cx="231" cy="141" r="13" fill="none" stroke="#047857" stroke-width="4"/>
+  <path d="M231 141 L 231 132 M 231 141 L 240 146 M 231 141 L 223 148" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+  <rect x="214" y="184" width="38" height="26" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="2.5"/>
+  <path d="M222 204 h22 M222 196 h22 M224 188 h8" stroke="#047857" stroke-width="3" stroke-linecap="round"/>
+  <g transform="translate(310 190)">
+    <rect width="210" height="140" rx="14" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+    <rect x="22" y="22" width="96" height="13" rx="6.5" fill="#022c22"/>
+    ${docLines(26, 28, 70, 3)}
+    <g transform="translate(22 68)">
+      <rect width="20" height="20" rx="5" fill="#ecfdf5" stroke="#047857" stroke-width="3"/>
+      <path d="M4 10 L 9 15 L 16 4" fill="none" stroke="#047857" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="30" y="2" width="100" height="8" rx="4" fill="#d4d4d8"/>
+      <rect x="30" y="14" width="58" height="7" rx="3.5" fill="#e4e4e7"/>
+    </g>
+    <g transform="translate(22 98)">
+      <rect width="20" height="20" rx="5" fill="#ecfdf5" stroke="#047857" stroke-width="3"/>
+      <path d="M4 10 L 9 15 L 16 4" fill="none" stroke="#047857" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="30" y="2" width="110" height="8" rx="4" fill="#d4d4d8"/>
+      <rect x="30" y="14" width="50" height="7" rx="3.5" fill="#e4e4e7"/>
+    </g>
+  </g>
+  <path d="M330 250 q16 -14 32 0 q16 14 32 0" fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" opacity="0.75"/>
+  <path d="M350 272 q14 -12 28 0 q14 12 28 0" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round" opacity="0.55"/>
+  ${leaf(168, 330, 0.85, '#10b981', -12)}`),
 
   'laboratorium-lingkungan.svg': wrap(`
   <circle cx="290" cy="215" r="118" fill="#ecfdf5"/>
