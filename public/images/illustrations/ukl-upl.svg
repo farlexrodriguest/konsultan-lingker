@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img">
+  <rect width="600" height="450" rx="28" fill="#fafaf9"/>
+
+  <rect x="170" y="80" width="240" height="300" rx="16" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  <rect x="196" y="106" width="120" height="14" rx="7" fill="#022c22"/>
+  <rect x="200" y="110" width="160" height="7" rx="3.5" fill="#d4d4d8"/><rect x="200" y="126" width="138" height="7" rx="3.5" fill="#d4d4d8"/><rect x="200" y="142" width="116" height="7" rx="3.5" fill="#d4d4d8"/>
+  <g transform="translate(198 176)">
+    <rect width="24" height="24" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="3"/>
+    <path d="M5 12 L 11 18 L 20 5" fill="none" stroke="#047857" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="36" y="3" width="130" height="8" rx="4" fill="#d4d4d8"/>
+    <rect x="36" y="17" width="90" height="7" rx="3.5" fill="#e4e4e7"/>
+  </g>
+  <g transform="translate(198 236)">
+    <rect width="24" height="24" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="3"/>
+    <path d="M5 12 L 11 18 L 20 5" fill="none" stroke="#047857" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="36" y="3" width="130" height="8" rx="4" fill="#d4d4d8"/>
+    <rect x="36" y="17" width="110" height="7" rx="3.5" fill="#e4e4e7"/>
+  </g>
+  <rect x="198" y="288" width="164" height="52" rx="10" fill="#a7f3d0" opacity="0.7"/>
+  <g transform="translate(226 314) scale(0.8)">
+  <path d="M0 -26 C 14 -8 22 4 22 12 A 22 22 0 1 1 -22 12 C -22 4 -14 -8 0 -26 Z" fill="#047857"/>
+</g>
+  <rect x="244" y="304" width="100" height="7" rx="3.5" fill="#047857" opacity="0.8"/>
+  <rect x="244" y="318" width="76" height="7" rx="3.5" fill="#047857" opacity="0.5"/>
+  <g transform="translate(430 130)">
+    <circle r="30" fill="#fbbf24"/>
+    <path d="M-11 0 L -3 9 L 13 -9" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(430 330) rotate(12) scale(0.9)">
+  <path d="M0 -34 C 22 -18 26 10 0 34 C -26 10 -22 -18 0 -34 Z" fill="#10b981"/>
+  <line x1="0" y1="-20" x2="0" y2="30" stroke="#022c22" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round"/>
+</g>
+</svg>
