@@ -7,7 +7,7 @@ title: "Persiapan Sampling Air Limbah"
 description: "Panduan praktis menyiapkan pengambilan sampel air limbah: informasi kegiatan, titik sampel, jadwal operasional, akses lokasi, hingga sampel tiba di laboratorium."
 draft: false
 pubDate: 2026-10-18T21:20:00Z
-updatedDate: "2026-10-18T21:44:59Z"
+updatedDate: "2026-10-18T23:47:50Z"
 image: "/images/illustrations/panduan-sampling-air-limbah.svg"
 socialImage: "/images/social/panduan-sampling-air-limbah.webp"
 imageAlt: "Botol sampel air limbah dengan label dan daftar periksa persiapan sampling"
@@ -116,4 +116,26 @@ blocks:
         answer: "Setiap pengujian memiliki batas waktu simpan yang berbeda, sehingga jadwal pengiriman dan pengerjaan diatur sebelum sampel diambil. Jangan mengatur pengiriman di luar kesepakatan ini karena sampel yang melewati batas waktunya tidak lagi merepresentasikan kondisi saat pengambilan."
       - question: "Apakah panduan ini berlaku untuk semua jenis air limbah?"
         answer: "Prinsip persiapan berlaku umum, tetapi titik sampel, kontainer, dan kebutuhan pengujian berbeda antara air limbah domestik, air limbah industri, dan kebutuhan pemantauan lain. Detail untuk lokasi Anda dikonfirmasi saat konsultasi berdasarkan dokumen lingkungan atau persyaratan yang berlaku."
+  - component: steps
+    id: howto-persiapan-sampling
+    heading: "Langkah Persiapan Sampling Air Limbah"
+    items:
+      - title: "Kumpulkan Dokumen Referensi"
+        text: "Siapkan dokumen lingkungan (AMDAL/UKL-UPL/SPPL), izin, dan laporan pengujian sebelumnya sebagai dasar perencanaan."
+      - title: "Identifikasi Titik Sampling"
+        text: "Tentukan lokasi titik pengambilan sampel pada outlet instalasi pengolahan atau titik yang ditetapkan dokumen lingkungan."
+      - title: "Sesuaikan Jadwal Operasional"
+        text: "Pastikan sampling dilakukan saat aktivitas berjalan normal agar sampel mewakili kondisi aktual."
+      - title: "Persiapkan Akses & Keselamatan"
+        text: "Sediakan akses ke titik sampling, informasi area berisiko, dan petugas pendamping yang mengenal instalasi."
+      - title: "Koordinasi dengan Laboratorium"
+        text: "Kirimkan informasi lengkap ke laboratorium untuk penentuan parameter, metode, dan jadwal pengambilan sampel."
+  - component: table
+    id: perbandingan-media-sampling
+    heading: "Parameter Umum per Jenis Media Air Limbah"
+    head: ["Media", "Parameter Utama", "Frekuwensi Standar"]
+    rows:
+      - ["Air Limbah Domestik", "pH, BOD, COD, TSS, Amonia", "Bulanan"]
+      - ["Air Limbah Industri", "pH, BOD, COD, TSS, Logam Berat, Minyak Lemak", "Bulanan / Triwulanan"]
+      - ["Air Limbah Khusus (Contoh: Elektroplating)", "pH, Logam Berat (Cr, Ni, Cu, Zn), Sianida", "Mingguan / Bulanan"]
 ---

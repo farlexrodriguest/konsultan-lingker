@@ -10,7 +10,7 @@ keywords:
   - artikel lingkungan
   - edukasi pengujian lingkungan
 pubDate: 2026-10-17T02:08:00Z
-updatedDate: 2026-10-17T02:09:00Z
+updatedDate: "2026-10-18T23:47:51Z"
 draft: false
 blocks:
   - component: page-header
