@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Generator aset visual Konsultan Lingker.
-// - 21 ilustrasi SVG ke public/images/illustrations/ (9 halaman + 7 layanan + 3 sublayanan + umum)
+// - 22 ilustrasi SVG ke public/images/illustrations/ (9 halaman + 7 layanan + 4 sublayanan + umum)
 // - logo (terang + inverse), favicon, og-default.svg + og-default.webp
 // Palet brand: emerald (utama), amber (aksen), zinc (netral).
 // Jalankan: node scripts/generate-illustrations.mjs
@@ -283,6 +283,32 @@ const illustrations = {
   </g>
   ${droplet(440, 250, 1.1, '#10b981')}
   ${droplet(392, 306, 0.7, '#047857')}`),
+
+  'uji-air-limbah.svg': wrap(`
+  <rect x="150" y="80" width="250" height="300" rx="16" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  <rect x="176" y="106" width="120" height="14" rx="7" fill="#022c22"/>
+  ${docLines(180, 110, 160, 3)}
+  <g transform="translate(176 176)">
+    <rect width="190" height="88" rx="12" fill="#ecfdf5" stroke="#047857" stroke-width="3"/>
+    ${flask(210, 226, 0.62)}
+    <rect x="238" y="206" width="60" height="9" rx="4.5" fill="#047857" opacity="0.85"/>
+    <rect x="238" y="224" width="72" height="7" rx="3.5" fill="#a7f3d0"/>
+    <rect x="238" y="238" width="52" height="8" rx="4" fill="#a7f3d0"/>
+  </g>
+  <g transform="translate(176 254)">
+    <rect width="150" height="46" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+    ${droplet(206, 277, 0.5, '#d97706')}
+    <rect x="222" y="272" width="96" height="10" rx="5" fill="#d97706" opacity="0.85"/>
+    <path d="M322 262 L 322 298 M 313 289 L 322 298 L 331 289" fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <rect x="176" y="326" width="164" height="30" rx="8" fill="#a7f3d0" opacity="0.7"/>
+  <rect x="190" y="343" width="86" height="8" rx="4" fill="#047857" opacity="0.8"/>
+  <g transform="translate(436 140)">
+    <circle r="30" fill="#fbbf24"/>
+    <path d="M-11 0 L -3 9 L 13 -9" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  ${droplet(446, 262, 1.15, '#10b981')}
+  ${droplet(398, 318, 0.65, '#047857')}`),
 
   'laboratorium-lingkungan.svg': wrap(`
   <circle cx="290" cy="215" r="118" fill="#ecfdf5"/>
