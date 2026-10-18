@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img">
+  <rect width="600" height="450" rx="28" fill="#fafaf9"/>
+
+  <rect x="170" y="80" width="240" height="300" rx="16" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  <rect x="196" y="106" width="140" height="14" rx="7" fill="#022c22"/>
+  <rect x="200" y="110" width="160" height="7" rx="3.5" fill="#d4d4d8"/><rect x="200" y="126" width="138" height="7" rx="3.5" fill="#d4d4d8"/><rect x="200" y="142" width="116" height="7" rx="3.5" fill="#d4d4d8"/>
+  <g transform="translate(196 176)">
+    <rect width="150" height="56" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="3"/>
+    <rect x="18" y="16" width="60" height="12" rx="6" fill="#047857" opacity="0.85"/>
+    <rect x="18" y="34" width="90" height="8" rx="4" fill="#a7f3d0"/>
+    <g transform="translate(126 28) scale(0.55)">
+  <path d="M0 -26 C 14 -8 22 4 22 12 A 22 22 0 1 1 -22 12 C -22 4 -14 -8 0 -26 Z" fill="#047857"/>
+</g>
+  </g>
+  <g transform="translate(196 246)">
+    <rect width="150" height="56" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+    <rect x="18" y="16" width="52" height="12" rx="6" fill="#d97706" opacity="0.85"/>
+    <rect x="18" y="34" width="84" height="8" rx="4" fill="#fcd34d"/>
+    <path d="M126 12 L 126 44 M 116 34 L 126 44 L 136 34" fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <rect x="198" y="322" width="164" height="34" rx="8" fill="#a7f3d0" opacity="0.7"/>
+  <rect x="212" y="335" width="90" height="8" rx="4" fill="#047857" opacity="0.8"/>
+  <g transform="translate(432 132)">
+    <circle r="30" fill="#fbbf24"/>
+    <path d="M-11 0 L -3 9 L 13 -9" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(440 250) scale(1.1)">
+  <path d="M0 -26 C 14 -8 22 4 22 12 A 22 22 0 1 1 -22 12 C -22 4 -14 -8 0 -26 Z" fill="#10b981"/>
+</g>
+  <g transform="translate(392 306) scale(0.7)">
+  <path d="M0 -26 C 14 -8 22 4 22 12 A 22 22 0 1 1 -22 12 C -22 4 -14 -8 0 -26 Z" fill="#047857"/>
+</g>
+</svg>
