@@ -1,16 +1,28 @@
 ---
+import { whatsappLink } from '../../utils/schema.ts';
 import { site } from '../../config/site.ts';
 import { ui } from '../../config/ui.ts';
-const { id, heading, message, button = ui.ctaBlock.defaultButton, class: css } = Astro.props;
-const hasWhatsapp = /^\d{8,15}$/.test(site.whatsapp);
-const href = hasWhatsapp ? `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}` : undefined;
+const { id, heading, message, button = ui.ctaBlock.defaultButton, serviceHref, serviceButton, class: css, ...rest } = Astro.props;
+const whatsappHref = whatsappLink(site.whatsapp, message);
+// Cek apakah serviceHref dan serviceButton ada dan non-empty (handle jika di-pass sebagai string kosong)
+const hasServiceHref = typeof serviceHref === 'string' && serviceHref.length > 0;
+const hasServiceButton = typeof serviceButton === 'string' && serviceButton.length > 0;
+const showService = hasServiceHref && hasServiceButton;
+
+const sectionClass = `rounded-2xl border border-emerald-200 bg-emerald-50 p-6 md:p-8 ${css?.section ?? ''}`;
+const headingClass = `mb-2 text-xl font-bold text-zinc-950 ${css?.heading ?? ''}`;
+const messageClass = `mb-5 text-zinc-700 ${css?.message ?? ''}`;
+const wrapperClass = `flex flex-col gap-3 sm:flex-row ${css?.buttonsWrapper ?? ''}`;
+const serviceBtnClass = 'inline-flex shrink-0 items-center justify-center rounded-full bg-amber-400 px-6 py-3 text-sm font-bold text-emerald-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400';
+const whatsappBtnClass = 'inline-flex shrink-0 items-center justify-center rounded-full border border-emerald-400/50 px-6 py-3 text-sm font-bold text-white no-underline transition hover:bg-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400';
 ---
-<section id={id} class={`rounded-2xl border border-emerald-200 bg-emerald-50 p-6 md:p-8 ${css?.section ?? ''}`}>
-  {heading && <h2 class={`mb-2 text-xl font-bold text-zinc-950 ${css?.heading ?? ''}`}>{heading}</h2>}
-  <p class={`mb-5 text-zinc-700 ${css?.message ?? ''}`}>{message}</p>
-  {href ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" class={`inline-flex items-center gap-2 rounded-full bg-emerald-700 px-6 py-2.5 font-bold text-white transition hover:bg-emerald-800 ${css?.button ?? ''}`}>{button}</a>
-  ) : (
-    <p class="text-sm text-zinc-600">{ui.ctaBlock.whatsappMissing}</p>
-  )}
+<section id={id} class={sectionClass}>
+  {heading && <h2 class={headingClass}>{heading}</h2>}
+  <p class={messageClass}>{message}</p>
+  <div class={wrapperClass}>
+    {showService && (
+      <a href={serviceHref} class={serviceBtnClass}>{serviceButton}</a>
+    )}
+    <a href={whatsappHref} target="_blank" rel="noopener noreferrer" class={whatsappBtnClass}>{button}</a>
+  </div>
 </section>
