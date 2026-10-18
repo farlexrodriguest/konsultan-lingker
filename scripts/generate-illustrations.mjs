@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Generator aset visual Konsultan Lingker.
-// - 22 ilustrasi SVG ke public/images/illustrations/ (9 halaman + 7 layanan + 4 sublayanan + umum)
+// - 23 ilustrasi SVG ke public/images/illustrations/ (9 halaman + 7 layanan + 5 sublayanan + umum)
 // - logo (terang + inverse), favicon, og-default.svg + og-default.webp
 // Palet brand: emerald (utama), amber (aksen), zinc (netral).
 // Jalankan: node scripts/generate-illustrations.mjs
@@ -309,6 +309,41 @@ const illustrations = {
   </g>
   ${droplet(446, 262, 1.15, '#10b981')}
   ${droplet(398, 318, 0.65, '#047857')}`),
+
+  'uji-kualitas-air.svg': wrap(`
+  <circle cx="400" cy="180" r="120" fill="#ecfdf5"/>
+  <path d="M110 340 Q 150 310 190 340 T 270 340 T 350 340 T 430 340 T 430 380 L 110 340 Z" fill="#a7f3d0" opacity="0.6"/>
+  <g transform="translate(236 148)">
+    <rect x="24" y="0" width="34" height="120" rx="17" fill="#ffffff" stroke="#047857" stroke-width="4"/>
+    <path d="M6 44 Q 6 58 21 62 L 41 62 Q 56 58 56 44 L 56 44 L 41 44 L 41 24 L 21 21 L 21 44 Z" fill="#10b981" opacity="0.9"/>
+    <rect x="30" y="26" width="22" height="86" rx="15" fill="#34d399" opacity="0.75"/>
+    <circle cx="53" cy="30" r="7" fill="#a7f3d0"/>
+    <circle cx="43" cy="66" r="4" fill="#ffffff" opacity="0.85"/>
+    <circle cx="44" cy="88" r="6" fill="#ffffff" opacity="0.85"/>
+  </g>
+  <g transform="translate(360 180)">
+    <rect width="220" height="150" rx="14" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+    <rect x="22" y="24" width="86" height="13" rx="6.5" fill="#022c22"/>
+    ${docLines(26, 30, 74, 3)}
+    <g transform="translate(22 74)">
+      <rect width="20" height="20" rx="5" fill="#ecfdf5" stroke="#047857" stroke-width="3"/>
+      <path d="M4 10 L 9 15 L 16 4" fill="none" stroke="#047857" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="30" y="2" width="106" height="8" rx="4" fill="#d4d4d8"/>
+      <rect x="30" y="14" width="58" height="7" rx="3.5" fill="#e4e4e7"/>
+    </g>
+    <g transform="translate(22 104)">
+      <rect width="20" height="20" rx="5" fill="#ecfdf5" stroke="#047857" stroke-width="3"/>
+      <path d="M4 10 L 9 15 L 16 4" fill="none" stroke="#047857" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="30" y="2" width="100" height="7" rx="3.5" fill="#d4d4d8"/>
+      <rect x="30" y="14" width="64" height="7" rx="3.5" fill="#e4e4e7"/>
+    </g>
+  </g>
+  <g transform="translate(404 118)">
+    <circle r="28" fill="#fbbf24"/>
+    <path d="M-11 0 L -3 9 L 13 -9" fill="none" stroke="#022c22" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  ${droplet(150, 130, 0.8, '#10b981')}
+  ${droplet(190, 200, 0.55, '#047857')}`),
 
   'laboratorium-lingkungan.svg': wrap(`
   <circle cx="290" cy="215" r="118" fill="#ecfdf5"/>
