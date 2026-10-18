@@ -44,7 +44,8 @@ export function organizationSchema(base: string) {
       streetAddress: site.address.street,
       addressLocality: site.address.city,
       addressRegion: site.address.province,
-      addressCountry: site.address.country,
+      postalCode: site.address.postalCode,
+      addressCountry: site.address.countryCode,
     },
   };
 }

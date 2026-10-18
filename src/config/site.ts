@@ -17,7 +17,10 @@ export const site = {
     village: 'Grogol Utara',
     city: 'Kebayoran Lama, Jakarta Selatan',
     province: 'DKI Jakarta',
+    postalCode: '12210',
     country: 'Indonesia',
+    // Kode negara ISO 3166-1 alpha-2 untuk JSON-LD (schema.org), bukan teks UI.
+    countryCode: 'ID',
     full: 'Jl. Kenanga Raya No. 88, Grogol Utara, Kebayoran Lama, Jakarta Selatan, DKI Jakarta 12210',
   },
 } as const;
