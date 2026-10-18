@@ -10,6 +10,8 @@ export async function getStaticPaths() {
 }
 const { article } = Astro.props as { article: CollectionEntry<'articles'> };
 const allArticles = await getCollection('articles');
+const allGuides = await getCollection('guides');
+const allContent = [...allArticles, ...allGuides];
 const slugify = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const headings = article.data.blocks.flatMap((block) => {
   if (block.component === 'section') {
@@ -34,5 +36,5 @@ const headings = article.data.blocks.flatMap((block) => {
   <div class="space-y-6">
     {article.data.blocks.map((block) => <BlockRenderer block={block} />)}
   </div>
-  <ArticleRelatedArticles slot="related" articles={allArticles} relatedIds={article.data.relatedArticles} />
+  <ArticleRelatedArticles slot="related" articles={allContent} relatedIds={article.data.relatedArticles} />
 </ArticleLayout>

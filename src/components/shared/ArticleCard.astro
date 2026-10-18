@@ -16,7 +16,7 @@ import { ui } from '../../config/ui.ts';
 const { article, headingLevel = 3, basePath = '/artikel/', readLabel = ui.article.readMore } = Astro.props;
 const Heading = headingLevel === 2 ? 'h2' : 'h3';
 const utcIso = (date: Date) => date.toISOString().replace(/\.\d{3}Z$/, 'Z');
-const href = `${basePath}${article.data.slug}/`;
+const href = article.collection === 'guides' ? `/panduan/${article.data.slug}/` : `/artikel/${article.data.slug}/`;
 ---
 <article class="flex h-full flex-col rounded-2xl border border-zinc-200 bg-white p-6 transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-900/5">
   {article.data.image && <div class="article-card__media overflow-hidden rounded-xl"><img src={article.data.image} alt="" class="h-40 w-full object-cover" loading="lazy" decoding="async" /></div>}

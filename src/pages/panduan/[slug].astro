@@ -11,7 +11,9 @@ export async function getStaticPaths() {
   return guides.filter((g) => !g.data.draft).map((guide) => ({ params: { slug: guide.data.slug }, props: { guide } }));
 }
 const { guide } = Astro.props as { guide: CollectionEntry<'guides'> };
+const allArticles = await getCollection('articles');
 const allGuides = await getCollection('guides');
+const allContent = [...allArticles, ...allGuides];
 const slugify = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const headings = guide.data.blocks.flatMap((block) => {
   if (block.component === 'section') {
@@ -36,5 +38,5 @@ const headings = guide.data.blocks.flatMap((block) => {
   <div class="space-y-6">
     {guide.data.blocks.map((block) => <BlockRenderer block={block} />)}
   </div>
-  <ArticleRelatedArticles slot="related" articles={allGuides} relatedIds={guide.data.relatedArticles} heading={ui.guide.relatedHeading} basePath="/panduan/" readLabel={ui.guide.readMore} />
+  <ArticleRelatedArticles slot="related" articles={allContent} relatedIds={guide.data.relatedArticles} heading={ui.guide.relatedHeading} basePath="/panduan/" readLabel={ui.guide.readMore} />
 </GuideLayout>

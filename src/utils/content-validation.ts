@@ -70,7 +70,7 @@ export async function validateContentRelations(): Promise<void> {
       }
       relatedArticleIds.add(relatedIdValue);
 
-      const target = articles.find((entry) => entry.data.id === relatedIdValue && !entry.data.draft);
+      const target = [...articles, ...guides].find((entry) => entry.data.id === relatedIdValue && !entry.data.draft);
       if (!target) {
         throw new Error(`${label} "${item.data.slug}" references missing, draft, or unpublished related article ID ${relatedIdValue}.`);
       }
