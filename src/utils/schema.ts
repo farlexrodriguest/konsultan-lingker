@@ -29,7 +29,7 @@ const iso = (date: Date) => date.toISOString().replace(/\.\d{3}Z$/, 'Z');
 export function organizationSchema(base: string) {
   const b = root(base);
   return {
-    '@type': 'Organization',
+    '@type': ['Organization', 'LocalBusiness'],
     '@id': `${b}/#organization`,
     name: site.name,
     legalName: site.legalName,
@@ -48,6 +48,12 @@ export function organizationSchema(base: string) {
       postalCode: site.address.postalCode,
       addressCountry: site.address.countryCode,
     },
+    // Recommended LocalBusiness fields to satisfy Google validator
+    openingHours: 'Mo-Fr 08:00-17:00',
+    priceRange: '$$',
+    paymentAccepted: 'Cash, Credit Card, Bank Transfer',
+    currenciesAccepted: 'IDR',
+    areaServed: ['ID'],
   };
 }
 
