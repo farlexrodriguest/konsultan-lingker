@@ -39,6 +39,7 @@ export function organizationSchema(base: string) {
     image: abs(base, '/images/og-default.webp'),
     email: site.email,
     telephone: site.phoneDisplay,
+    about: site.description,
     address: {
       '@type': 'PostalAddress',
       streetAddress: site.address.street,
@@ -49,6 +50,10 @@ export function organizationSchema(base: string) {
     },
   };
 }
+
+export const whatsappLink = (phone: string, text: string = '') => {
+  return `https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(text)}`;
+};
 
 /** WebSite — node sitewide, dirujuk setiap WebPage via isPartOf. */
 export function webSiteSchema(base: string) {
