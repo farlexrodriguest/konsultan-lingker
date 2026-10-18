@@ -1,0 +1,154 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '../components/shared/SiteHeader.astro';
+import SiteFooter from '../components/shared/SiteFooter.astro';
+import ArticlePreviousArticles from '../components/shared/ArticlePreviousArticles.astro';
+import { ui } from '../config/ui.ts';
+import '../styles/global.css';
+const { guide, headings = [] } = Astro.props as {
+  guide: CollectionEntry<'guides'>;
+  headings?: Array<{ depth: number; text: string; slug: string }>;
+};
+const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const guides = await getCollection('guides');
+const hasPreviousGuides = guides.some((item) => !item.data.draft && item.data.contentType !== 'local-seo' && item.data.id < guide.data.id);
+const pageTitle = guide.data.title;
+const description = guide.data.description;
+const canonical = `/panduan/${guide.data.slug}/`;
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? Astro.url.origin;
+const guideUrl = new URL(canonical, siteUrl).toString();
+const guideImageSource = guide.data.socialImage ?? ui.meta.articleImage;
+const isRasterGuideImage = /\.(png|jpe?g|webp|gif)$/i.test(guideImageSource.split(/[?#]/)[0]);
+const guideImage = new URL(isRasterGuideImage ? guideImageSource : ui.meta.defaultImage, siteUrl).toString();
+
+const authorName = typeof guide.data.author === 'object' ? guide.data.author.name : guide.data.author;
+const authorUrl = typeof guide.data.author === 'object' ? guide.data.author.url : undefined;
+
+let footerServiceTitle: string | undefined;
+let relatedServiceHref = '/layanan/';
+let guideCtaText = ui.guide.ctaText;
+let guideCtaButton = ui.guide.ctaButton;
+let relatedServiceJsonLd: any = null;
+
+if (guide.data.relatedType === 'service' && guide.data.relatedId) {
+  const services = await getCollection('services');
+  const related = services.find((s) => s.data.id === guide.data.relatedId && !s.data.draft && s.data.status === 'active');
+  if (related) {
+    footerServiceTitle = related.data.title;
+    relatedServiceHref = `/layanan/${related.data.slug}/`;
+    guideCtaText = `Ikuti panduan ${related.data.title} dengan persiapan yang tepat, lalu diskusikan kebutuhan lokasi Anda bersama tim kami.`;
+    guideCtaButton = 'Lihat layanan terkait';
+  }
+}
+const faqBlock = guide.data.blocks.find((block) => block.component === 'faq');
+const faqJsonLd = faqBlock && 'items' in faqBlock ? {
+  '@type': 'FAQPage',
+  '@id': `${guideUrl}#faq`,
+  inLanguage: 'id-ID',
+  mainEntity: faqBlock.items.map((item: { question: string; answer: string }) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+} : null;
+
+const utcIso = (date: Date) => date.toISOString().replace(/\.\d{3}Z$/, 'Z');
+const guideJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': guide.data.schemaType,
+      '@id': `${guideUrl}#article`,
+      headline: pageTitle,
+      description,
+      inLanguage: 'id-ID',
+      image: [guideImage],
+      datePublished: utcIso(guide.data.pubDate),
+      ...(guide.data.updatedDate ? { dateModified: utcIso(guide.data.updatedDate) } : {}),
+      ...(authorName ? { author: { '@type': 'Person', name: authorName, ...(authorUrl ? { url: authorUrl } : {}) } } : {}),
+      publisher: {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: ui.brand.name,
+        url: siteUrl,
+        ...(guide.data.serviceArea ? { areaServed: guide.data.serviceArea } : {}),
+      },
+
+      ...(relatedServiceJsonLd ? { about: { '@id': relatedServiceJsonLd['@id'] } } : {}),
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `${guideUrl}#webpage` },
+      url: guideUrl,
+    },
+    ...(relatedServiceJsonLd ? [relatedServiceJsonLd] : []),
+    ...(faqJsonLd ? [faqJsonLd] : [])
+  ]
+}).replace(/</g, '\\u003c');
+---
+<BaseLayout title={pageTitle} description={description} canonical={canonical} socialImage={guide.data.socialImage ?? ui.meta.articleImage} imageAlt={guide.data.image ? `${ui.guide.heroAltPrefix}${pageTitle}` : ui.guide.socialImageAlt} pubDate={guide.data.pubDate} updatedDate={guide.data.updatedDate} mainEntityId={`${guideUrl}#article`}>
+  <script slot="head" type="application/ld+json" set:html={guideJsonLd}></script>
+  <meta slot="head" property="article:published_time" content={utcIso(guide.data.pubDate)} />
+  {guide.data.updatedDate && <meta slot="head" property="article:modified_time" content={utcIso(guide.data.updatedDate)} />}
+  {authorName && <meta slot="head" property="article:author" content={authorName} />}
+    <SiteHeader />
+  <main id="main-content" class="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-5 py-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:py-14">
+    {(tocItems.length > 0 || hasPreviousGuides) && (
+      <aside class="self-start lg:sticky lg:top-24">
+        {tocItems.length > 0 && <details class="rounded-2xl border border-zinc-200 bg-stone-50/70 p-4 lg:hidden">
+          <summary class="cursor-pointer font-semibold text-zinc-800">{ui.guide.tocMobile}</summary>
+          <nav class="mt-3" aria-label={ui.guide.tocAriaLabel}>
+            <ul class="space-y-2 pl-4 text-sm">
+              {tocItems.map((item) => <li class={item.depth === 3 ? 'ml-4' : ''}><a class="text-zinc-600 hover:text-emerald-700" href={`#${item.slug}`}>{item.text}</a></li>)}
+            </ul>
+          </nav>
+        </details>}
+        {tocItems.length > 0 && <nav class="hidden lg:block" aria-label={ui.guide.tocAriaLabel}>
+          <p class="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-zinc-400">{ui.guide.tocTitle}</p>
+          <ul class="space-y-2 border-l-2 border-emerald-200 pl-4">
+            {tocItems.map((item) => <li class={item.depth === 3 ? 'ml-4' : ''}><a class="text-sm text-zinc-600 no-underline hover:text-emerald-700" href={`#${item.slug}`}>{item.text}</a></li>)}
+          </ul>
+        </nav>}
+        <ArticlePreviousArticles article={guide} articles={guides} basePath="/panduan/" headingLabel={ui.guide.previousHeading} />
+      </aside>
+    )}
+    <article class="prose-content min-w-0">
+      <header class="mb-9 rounded-2xl border-b border-zinc-200 bg-stone-50/60 px-6 py-7">
+        {guide.data.category && <p class="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">{guide.data.category}</p>}
+        <h1 class="mt-3 font-display text-3xl font-extrabold tracking-tight text-zinc-950 md:text-4xl">{pageTitle}</h1>
+        <p class="mt-4 text-lg leading-7 text-zinc-600">{description}</p>
+        <img src={guide.data.image ?? ui.guide.defaultImage} alt={`${ui.guide.inlineAltPrefix}${pageTitle}`} class="mt-6 w-full max-w-2xl rounded-2xl ring-1 ring-zinc-200/70" width="560" height="320" fetchpriority="high" />
+        <div class="mt-5 flex flex-wrap items-center gap-4 text-sm text-zinc-500">
+          <time datetime={utcIso(guide.data.pubDate)}>{guide.data.pubDate.toLocaleDateString(ui.locale, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' })}</time>
+          {guide.data.updatedDate && <span>{ui.guide.updatedPrefix} {guide.data.updatedDate.toLocaleDateString(ui.locale, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' })}</span>}
+          {authorName && (
+            <span>
+              {ui.guide.authorPrefix}{' '}
+              {authorUrl ? (
+                <a href={authorUrl} target="_blank" rel="noopener noreferrer" class="text-zinc-500 underline decoration-zinc-300 underline-offset-4 transition hover:text-emerald-700 hover:decoration-emerald-700">
+                  {authorName}
+                </a>
+              ) : (
+                authorName
+              )}
+            </span>
+          )}
+        </div>
+      </header>
+      <div class="prose-content [&>h2]:scroll-mt-28 [&>h3]:scroll-mt-24"><slot /></div>
+      <slot name="related" />
+    </article>
+  </main>
+  <section class="bg-emerald-950 text-white">
+    <div class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-10 sm:flex-row sm:items-center sm:justify-between lg:py-12">
+      <div class="max-w-2xl">
+        <h2 class="font-display text-xl font-extrabold tracking-tight text-white">{ui.guide.ctaHeading}</h2>
+        <p class="mt-2 leading-7 text-emerald-100/85">{guideCtaText}</p>
+      </div>
+      <a href={relatedServiceHref} class="inline-flex shrink-0 items-center justify-center rounded-full bg-amber-400 px-6 py-3 text-sm font-bold text-emerald-950 no-underline transition hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400">{guideCtaButton}</a>
+    </div>
+  </section>
+  <SiteFooter serviceTitle={footerServiceTitle} />
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+/**
+ * Modal — native HTML dialog with Tailwind styling; no DaisyUI dependency.
+ * When open=true, the dialog is opened as a modal in the browser.
+ */
+import { ui } from '../../config/ui.ts';
+const { id, open = false, title, size = 'md' } = Astro.props;
+const sizes: Record<string, string> = {
+  sm: 'max-w-sm',
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+  xl: 'max-w-xl',
+};
+---
+<dialog
+  id={id}
+  data-modal
+  data-open={open ? 'true' : 'false'}
+  aria-label={title ?? ui.dialog.ariaLabel}
+  class="m-auto w-[calc(100%-2rem)] max-w-none border-0 bg-transparent p-0 text-zinc-900 backdrop:bg-zinc-950/60"
+>
+  <section class={`relative mx-auto max-h-[85vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl ${sizes[size] ?? sizes.md}`}>
+    <div class="mb-4 flex items-start justify-between gap-4">
+      {title && <h2 class="text-lg font-bold text-zinc-950">{title}</h2>}
+      <form method="dialog">
+        <button type="submit" class="rounded-lg px-3 py-1 text-sm font-semibold text-zinc-600 hover:bg-zinc-100 focus-visible:outline-2 focus-visible:outline-emerald-600" aria-label={ui.dialog.closeLabel}>{ui.dialog.closeLabel}</button>
+      </form>
+    </div>
+    <slot />
+  </section>
+</dialog>
+
+<script>
+  document.querySelectorAll<HTMLDialogElement>('[data-modal]').forEach((dialog) => {
+    if (dialog.dataset.bound === 'true') return;
+    dialog.dataset.bound = 'true';
+
+    if (dialog.dataset.open === 'true' && !dialog.open) {
+      dialog.showModal();
+    }
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const trigger = event.target.closest<HTMLElement>('[data-modal-open]');
+    const targetId = trigger?.dataset.modalOpen;
+    if (!targetId) return;
+
+    const dialog = document.getElementById(targetId);
+    if (dialog instanceof HTMLDialogElement && dialog.matches('[data-modal]') && !dialog.open) {
+      dialog.showModal();
+    }
+  });
+</script>

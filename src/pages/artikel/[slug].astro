@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import BlockRenderer from '../../components/blocks/BlockRenderer.astro';
+import ArticleRelatedArticles from '../../components/shared/ArticleRelatedArticles.astro';
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.filter((a) => !a.data.draft).map((article) => ({ params: { slug: article.data.slug }, props: { article } }));
+}
+const { article } = Astro.props as { article: CollectionEntry<'articles'> };
+const allArticles = await getCollection('articles');
+const slugify = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const headings = article.data.blocks.flatMap((block) => {
+  if (block.component === 'section') {
+    return [{ depth: 2, text: block.heading, slug: block.id ?? slugify(block.heading) }];
+  }
+
+  if (
+    block.component === 'process-timeline' ||
+    block.component === 'checklist-card' ||
+    block.component === 'comparison-table' ||
+    block.component === 'document-list' ||
+    block.component === 'feature-card-grid' ||
+    block.component === 'source-links'
+  ) {
+    return [{ depth: 2, text: block.title, slug: `${block.id}-title` }];
+  }
+
+  return [];
+});
+---
+<ArticleLayout article={article} headings={headings}>
+  <div class="space-y-6">
+    {article.data.blocks.map((block) => <BlockRenderer block={block} />)}
+  </div>
+  <ArticleRelatedArticles slot="related" articles={allArticles} relatedIds={article.data.relatedArticles} />
+</ArticleLayout>

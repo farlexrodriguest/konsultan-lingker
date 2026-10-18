@@ -1,0 +1,25 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlockRenderer from '../components/blocks/BlockRenderer.astro';
+import SiteHeader from '../components/shared/SiteHeader.astro';
+import SiteFooter from '../components/shared/SiteFooter.astro';
+const page = await getEntry('pages', '404');
+if (!page) throw new Error('Missing "404" page content entry.');
+if (page.data.draft) throw new Error('Page "404" is marked draft but has a statically defined route.');
+---
+<BaseLayout
+  title={page.data.seoTitle ?? page.data.title}
+  description={page.data.description}
+  socialImage={page.data.socialImage}
+  canonical={page.data.canonical}
+  noindex={page.data.noindex}
+  pubDate={page.data.pubDate}
+  updatedDate={page.data.updatedDate}
+>
+  <SiteHeader />
+  <main id="main-content">
+    {page.data.blocks.map((block) => <BlockRenderer block={block} />)}
+  </main>
+  <SiteFooter />
+</BaseLayout>

@@ -1,0 +1,120 @@
+---
+import '../styles/global.css';
+import { ui } from '../config/ui.ts';
+const { title = ui.meta.defaultTitle, description = ui.meta.defaultDescription, canonical, noindex = false, socialImage = ui.meta.defaultImage, pubDate, updatedDate, mainEntityId } = Astro.props as { title?: string; description?: string; canonical?: string; noindex?: boolean; socialImage?: string; pubDate?: Date; updatedDate?: Date; mainEntityId?: string };
+// Crawler sosial (Facebook, LinkedIn, WhatsApp, X) tidak merender SVG. Gambar non-raster diganti fallback WebP.
+const isRasterImage = /\.(png|jpe?g|webp|gif)$/i.test(socialImage.split(/[?#]/)[0]);
+const resolvedSocialImage = isRasterImage ? socialImage : ui.meta.defaultImage;
+const imageAlt = isRasterImage ? (Astro.props.imageAlt ?? title) : ui.meta.socialImageAlt;
+const utcIso = (date: Date) => date.toISOString().replace(/\.\d{3}Z$/, 'Z');
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const canonicalUrl = canonical ? new URL(canonical, siteUrl || Astro.url).toString() : new URL(Astro.url.pathname, siteUrl || Astro.url).toString();
+const imageUrl = resolvedSocialImage.startsWith('http') ? resolvedSocialImage : new URL(resolvedSocialImage, siteUrl || Astro.url).toString();
+// Build one canonical BreadcrumbList for every route using this layout.
+const pathname = new URL(canonicalUrl).pathname.replace(/\/+$/, '') || '/';
+const pathSegments = pathname.split('/').filter(Boolean);
+const breadcrumbLabels: Record<string, string> = {
+  layanan: ui.nav.services,
+  panduan: ui.nav.guides,
+  artikel: ui.nav.articles,
+  faq: ui.nav.faq,
+  'hubungi-kami': ui.nav.contact,
+  'tentang-kami': ui.nav.about,
+};
+const breadcrumbItems = [{ name: ui.nav.home, url: new URL('/', siteUrl || Astro.url).toString() }];
+if (pathSegments.length > 0) {
+  let accumulatedPath = '';
+  for (let index = 0; index < pathSegments.length; index += 1) {
+    const segment = pathSegments[index];
+    accumulatedPath += `/${segment}`;
+    const isLast = index === pathSegments.length - 1;
+    const name = isLast
+      ? title
+      : breadcrumbLabels[segment] ?? segment.replace(/-/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+    breadcrumbItems.push({
+      name,
+      url: new URL(`${accumulatedPath}/`, siteUrl || Astro.url).toString(),
+    });
+  }
+} else {
+  breadcrumbItems[0] = { name: title, url: canonicalUrl };
+}
+const breadcrumbJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: item.url,
+  })),
+}).replace(/</g, '\\u003c');
+const pageJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#webpage`,
+  name: title,
+  description,
+  inLanguage: 'id-ID',
+  ...(pubDate ? { datePublished: utcIso(pubDate) } : {}),
+  ...(updatedDate ? { dateModified: utcIso(updatedDate) } : {}),
+  url: canonicalUrl,
+  ...(mainEntityId ? { mainEntity: { '@id': mainEntityId } } : {}),
+  isPartOf: { '@id': `${siteUrl || Astro.url.origin}/#website` },
+  about: { '@id': `${siteUrl || Astro.url.origin}/#organization` },
+}).replace(/</g, '\\u003c');
+const siteGraphJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl || Astro.url.origin}/#organization`,
+      name: ui.brand.name,
+      url: siteUrl || Astro.url.origin,
+      description: ui.meta.defaultDescription,
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl || Astro.url.origin}/#website`,
+      name: ui.meta.defaultTitle,
+      url: siteUrl || Astro.url.origin,
+      inLanguage: ui.locale,
+      publisher: { '@id': `${siteUrl || Astro.url.origin}/#organization` },
+    },
+  ],
+}).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {pubDate && <meta name="datePublished" content={utcIso(pubDate)} />}
+    {updatedDate && <meta name="dateModified" content={utcIso(updatedDate)} />}
+    <script type="application/ld+json" set:html={siteGraphJsonLd}></script>
+    <script type="application/ld+json" set:html={pageJsonLd}></script>
+    <script type="application/ld+json" set:html={breadcrumbJsonLd}></script>
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonicalUrl} />}
+    <meta property="og:type" content={Astro.url.pathname.startsWith('/artikel/') && Astro.url.pathname !== '/artikel/' ? 'article' : 'website'} />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen bg-white text-zinc-800 antialiased">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-emerald-800 focus:px-4 focus:py-3 focus:font-bold focus:text-white focus:shadow-lg focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-emerald-700">Lewati ke konten utama</a>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,21 @@
+---
+const block = Astro.props;
+const slugify = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const headingId = block.id ?? slugify(block.heading);
+---
+<section id={headingId} class="mt-8 scroll-mt-24">
+  <h2 class="mb-4 text-2xl font-extrabold tracking-tight text-zinc-950">{block.heading}</h2>
+  <div class="space-y-4 text-base leading-8 text-zinc-700">
+    {block.content.map((item: any) => item.type === 'p' ? (
+      <p>{item.text}</p>
+    ) : item.ordered ? (
+      <ol class="list-decimal space-y-2 pl-6">
+        {item.items.map((text: string) => <li>{text}</li>)}
+      </ol>
+    ) : (
+      <ul class="list-disc space-y-2 pl-6">
+        {item.items.map((text: string) => <li>{text}</li>)}
+      </ul>
+    ))}
+  </div>
+</section>

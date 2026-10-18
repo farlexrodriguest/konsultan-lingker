@@ -1,0 +1,22 @@
+---
+const { id, heading, head, rows, class: css } = Astro.props;
+---
+<section id={id} class={`rounded-2xl border border-zinc-200 bg-white p-6 md:p-8 ${css?.section ?? ''}`}>
+  {heading && <h2 class={`mb-4 text-2xl font-extrabold text-zinc-950 ${css?.heading ?? ''}`}>{heading}</h2>}
+  <div class={`overflow-x-auto rounded-xl border border-zinc-200 ${css?.wrapper ?? ''}`}>
+    <table class={`w-full text-left text-sm ${css?.table ?? ''}`}>
+      <thead>
+        <tr class={`border-b border-zinc-200 bg-zinc-50 ${css?.row ?? ''}`}>
+          {head.map((h: string) => <th class={`px-4 py-3 font-semibold text-zinc-950 ${css?.th ?? ''}`}>{h}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row: string[], i: number) => (
+          <tr class={`border-b border-zinc-100 last:border-0 ${i % 2 === 1 ? 'bg-zinc-50/50' : ''} ${css?.row ?? ''}`}>
+            {row.map((cell: string) => <td class={`px-4 py-3 text-zinc-700 ${css?.td ?? ''}`}>{cell}</td>)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>

@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ArticleCard from './ArticleCard.astro';
+import { ui } from '../../config/ui.ts';
+const { articles = [], heading = ui.article.latestHeading, description = ui.article.latestDescription } = Astro.props as {
+  articles?: CollectionEntry<'articles'>[];
+  heading?: string;
+  description?: string;
+};
+const latest = [...articles].filter((item) => !item.data.draft && item.data.contentType !== 'local-seo').sort((a: any, b: any) => (b.data.updatedDate ?? b.data.pubDate).valueOf() - (a.data.updatedDate ?? a.data.pubDate).valueOf()).slice(0, 3);
+---
+<section class="mx-auto max-w-7xl px-5 py-16">
+  <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+    <div><p class="text-sm font-bold uppercase tracking-wider text-emerald-700">{ui.article.latestEyebrow}</p><h2 class="mt-2 text-3xl font-extrabold tracking-tight text-zinc-950">{heading}</h2><p class="mt-3 max-w-2xl text-zinc-600">{description}</p></div>
+    <a href="/artikel/" class="font-semibold text-emerald-700 hover:text-emerald-900">{ui.article.allArticlesLink}</a>
+  </div>
+  {latest.length ? <div class="grid gap-5 md:grid-cols-3">{latest.map((a: CollectionEntry<'articles'>) => <ArticleCard article={a} />)}</div> : <p class="rounded-xl border border-dashed border-zinc-300 p-8 text-zinc-500">{ui.article.empty}</p>}
+</section>

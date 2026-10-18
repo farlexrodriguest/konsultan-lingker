@@ -1,0 +1,16 @@
+---
+import { site } from '../../config/site.ts';
+import { ui } from '../../config/ui.ts';
+const { id, heading, message, button = ui.ctaBlock.defaultButton, class: css } = Astro.props;
+const hasWhatsapp = /^\d{8,15}$/.test(site.whatsapp);
+const href = hasWhatsapp ? `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}` : undefined;
+---
+<section id={id} class={`rounded-2xl border border-emerald-200 bg-emerald-50 p-6 md:p-8 ${css?.section ?? ''}`}>
+  {heading && <h2 class={`mb-2 text-xl font-bold text-zinc-950 ${css?.heading ?? ''}`}>{heading}</h2>}
+  <p class={`mb-5 text-zinc-700 ${css?.message ?? ''}`}>{message}</p>
+  {href ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" class={`inline-flex items-center gap-2 rounded-full bg-emerald-700 px-6 py-2.5 font-bold text-white transition hover:bg-emerald-800 ${css?.button ?? ''}`}>{button}</a>
+  ) : (
+    <p class="text-sm text-zinc-600">{ui.ctaBlock.whatsappMissing}</p>
+  )}
+</section>

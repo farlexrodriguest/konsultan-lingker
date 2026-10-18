@@ -1,0 +1,15 @@
+---
+const { id = 'proses', eyebrow, heading, description, stepPrefix, steps } = Astro.props as { id?: string; eyebrow: string; heading: string; description: string; stepPrefix: string; steps: Array<{ title: string; text: string }> };
+---
+<section id={id} class="scroll-mt-8 border-y border-zinc-200 bg-zinc-50 py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="text-sm font-extrabold uppercase tracking-[0.16em] text-emerald-700">{eyebrow}</p>
+      <h2 class="mt-3 text-3xl font-black tracking-tight text-zinc-950 sm:text-4xl">{heading}</h2>
+      <p class="mt-4 leading-7 text-zinc-600">{description}</p>
+    </div>
+    <div class="mt-12 grid gap-8 md:grid-cols-3">
+      {steps.map((step, index) => <div class="relative border-l-2 border-emerald-200 pl-6"><span class="text-xs font-black tracking-[0.2em] text-emerald-700">{stepPrefix} {String(index + 1).padStart(2, '0')}</span><h3 class="mt-3 text-xl font-extrabold text-zinc-950">{step.title}</h3><p class="mt-3 leading-7 text-zinc-600">{step.text}</p></div>)}
+    </div>
+  </div>
+</section>

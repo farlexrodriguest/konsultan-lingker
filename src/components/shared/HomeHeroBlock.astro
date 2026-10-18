@@ -1,0 +1,31 @@
+---
+const { eyebrow, titleLead, titleHighlight, description, primaryCta, primaryHref, secondaryCta, secondaryHref, note, image, imageAlt, supportEyebrow, supportItems } = Astro.props as { eyebrow: string; titleLead: string; titleHighlight: string; description: string; primaryCta: string; primaryHref: string; secondaryCta: string; secondaryHref: string; note: string; image: string; imageAlt: string; supportEyebrow: string; supportItems: Array<{ number: string; title: string; text: string }> };
+---
+<section class="relative isolate overflow-hidden bg-emerald-950 text-white">
+  <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-emerald-800/60 via-emerald-950 to-emerald-950"></div>
+  <div class="absolute -left-24 top-10 -z-10 h-64 w-72 rounded-full bg-amber-400/10 blur-3xl" aria-hidden="true"></div>
+  <div class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[1.05fr_0.95fr] md:items-center md:py-24">
+    <div>
+      <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-amber-200">{eyebrow}</p>
+      <h1 class="max-w-3xl font-display text-4xl font-extrabold leading-[1.12] tracking-tight sm:text-5xl lg:text-[3.4rem]">{titleLead} <span class="text-amber-300">{titleHighlight}</span></h1>
+      <p class="mt-6 max-w-2xl text-lg leading-8 text-emerald-100/85">{description}</p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href={primaryHref} class="inline-flex items-center justify-center rounded-full bg-amber-400 px-7 py-3.5 font-bold text-emerald-950 no-underline transition hover:bg-amber-300">{primaryCta} <span class="ml-2" aria-hidden="true">→</span></a>
+        <a href={secondaryHref} class="inline-flex items-center justify-center rounded-full border border-emerald-300/30 px-6 py-3.5 font-bold text-emerald-50 no-underline transition hover:bg-white/10">{secondaryCta}</a>
+      </div>
+      <p class="mt-6 text-sm text-emerald-200/70">{note}</p>
+    </div>
+    <div class="relative">
+      <div class="rounded-3xl border border-emerald-400/20 bg-emerald-900/40 p-5 shadow-2xl backdrop-blur-sm sm:p-7">
+        <img src={image} alt={imageAlt} class="mx-auto h-auto w-full max-w-xs object-contain" width="640" height="520" fetchpriority="high" />
+      </div>
+      <div class="absolute -right-2 -top-3 -z-10 h-28 w-28 rounded-full bg-amber-400/20 blur-3xl"></div>
+    </div>
+  </div>
+  <div class="mx-auto max-w-7xl px-5 pb-14 md:pb-20">
+    <h2 class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-300/80">{supportEyebrow}</h2>
+    <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {supportItems.map((item) => <div class="flex gap-4 rounded-2xl border border-white/10 bg-emerald-900/50 p-5"><span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-400/15 text-base font-bold text-amber-200" aria-hidden="true">{item.number}</span><div><h3 class="font-display font-bold text-white">{item.title}</h3><p class="mt-1 text-sm leading-6 text-emerald-100/75">{item.text}</p></div></div>)}
+    </div>
+  </div>
+</section>

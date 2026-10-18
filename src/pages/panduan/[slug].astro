@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import GuideLayout from '../../layouts/GuideLayout.astro';
+import BlockRenderer from '../../components/blocks/BlockRenderer.astro';
+import ArticleRelatedArticles from '../../components/shared/ArticleRelatedArticles.astro';
+import { ui } from '../../config/ui.ts';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides.filter((g) => !g.data.draft).map((guide) => ({ params: { slug: guide.data.slug }, props: { guide } }));
+}
+const { guide } = Astro.props as { guide: CollectionEntry<'guides'> };
+const allGuides = await getCollection('guides');
+const slugify = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const headings = guide.data.blocks.flatMap((block) => {
+  if (block.component === 'section') {
+    return [{ depth: 2, text: block.heading, slug: block.id ?? slugify(block.heading) }];
+  }
+
+  if (
+    block.component === 'process-timeline' ||
+    block.component === 'checklist-card' ||
+    block.component === 'comparison-table' ||
+    block.component === 'document-list' ||
+    block.component === 'feature-card-grid' ||
+    block.component === 'source-links'
+  ) {
+    return [{ depth: 2, text: block.title, slug: `${block.id}-title` }];
+  }
+
+  return [];
+});
+---
+<GuideLayout guide={guide} headings={headings}>
+  <div class="space-y-6">
+    {guide.data.blocks.map((block) => <BlockRenderer block={block} />)}
+  </div>
+  <ArticleRelatedArticles slot="related" articles={allGuides} relatedIds={guide.data.relatedArticles} heading={ui.guide.relatedHeading} basePath="/panduan/" readLabel={ui.guide.readMore} />
+</GuideLayout>

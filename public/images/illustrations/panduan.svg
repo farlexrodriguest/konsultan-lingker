@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img">
+  <rect width="600" height="450" rx="28" fill="#fafaf9"/>
+
+  <rect x="150" y="90" width="300" height="270" rx="20" fill="#ffffff" stroke="#d4d4d8" stroke-width="3"/>
+  
+  <g transform="translate(185 150)">
+    <rect x="0" y="-16" width="34" height="34" rx="10" fill="#047857"/>
+    <text x="17" y="10" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="#ffffff">1</text>
+    <rect x="52" y="-2" width="150" height="8" rx="4" fill="#d4d4d8"/>
+    <rect x="52" y="8" width="110" height="8" rx="4" fill="#e4e4e7"/>
+  </g>
+  <g transform="translate(185 212)">
+    <rect x="0" y="-16" width="34" height="34" rx="10" fill="#047857"/>
+    <text x="17" y="10" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="#ffffff">2</text>
+    <rect x="52" y="-2" width="150" height="8" rx="4" fill="#d4d4d8"/>
+    <rect x="52" y="8" width="110" height="8" rx="4" fill="#e4e4e7"/>
+  </g>
+  <g transform="translate(185 274)">
+    <rect x="0" y="-16" width="34" height="34" rx="10" fill="#047857"/>
+    <text x="17" y="10" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="#ffffff">3</text>
+    <rect x="52" y="-2" width="150" height="8" rx="4" fill="#d4d4d8"/>
+    <rect x="52" y="8" width="110" height="8" rx="4" fill="#e4e4e7"/>
+  </g>
+  <g transform="translate(480 130) rotate(12) scale(0.8)">
+  <path d="M0 -34 C 22 -18 26 10 0 34 C -26 10 -22 -18 0 -34 Z" fill="#10b981"/>
+  <line x1="0" y1="-20" x2="0" y2="30" stroke="#022c22" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round"/>
+</g>
+</svg>

@@ -1,0 +1,129 @@
+---
+/**
+ * ContactPanel — contact section with WhatsApp/phone links, office address,
+ * operating hours, and a consultation form.
+ *
+ * All identity values (company name, phone, WhatsApp, address) come from
+ * `src/config/site.ts`; shared labels come from `src/config/ui.ts`. Only
+ * page-specific copy is received through props.
+ *
+ * Props:
+ * - id: string — anchor id
+ * - title: string — section title
+ * - intro: string — intro text
+ * - hoursTitle: string — operating hours title
+ * - hours: string[] — operating hours lines
+ * - formTitle: string — form title
+ * - serviceOptions: string[] — service options for the form
+ */
+import { site } from '../../config/site.ts';
+import { ui } from '../../config/ui.ts';
+const {
+  id,
+  title,
+  intro,
+  hoursTitle,
+  hours,
+  formTitle,
+  serviceOptions,
+} = Astro.props as {
+  id: string;
+  title: string;
+  intro: string;
+  hoursTitle: string;
+  hours: string[];
+  formTitle: string;
+  serviceOptions: string[];
+};
+
+const titleId = `${id}-title`;
+const formId = `${id}-form`;
+---
+
+<section id={id} class="bg-white py-16" aria-labelledby={titleId}>
+  <div class="mx-auto max-w-7xl px-5">
+    <header class="mb-12 text-center">
+      <h2 id={titleId} class="mb-4 text-3xl font-bold text-zinc-950">{title}</h2>
+      <p class="mx-auto max-w-2xl text-lg text-zinc-600">{intro}</p>
+    </header>
+    <div class="grid gap-12 lg:grid-cols-2">
+      <div class="space-y-8">
+        <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-8">
+          <h3 class="mb-4 text-xl font-bold text-zinc-950">{ui.contact.channelsHeading}</h3>
+          <div class="space-y-4">
+            <a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener noreferrer" class="block rounded-lg bg-green-600 p-4 text-white shadow-sm transition-colors hover:bg-green-700">
+              <span class="text-lg font-bold">{ui.contact.whatsappLabel}: {site.whatsappDisplay}</span>
+            </a>
+            <a href={`tel:${site.phone}`} class="block rounded-lg border border-zinc-300 bg-white p-4 text-zinc-800 transition-colors hover:border-emerald-400 hover:text-emerald-700">
+              <span class="text-lg font-bold">{ui.contact.phoneLabel}: {site.phoneDisplay}</span>
+            </a>
+          </div>
+        </div>
+        <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-8">
+          <h3 class="mb-4 text-xl font-bold text-zinc-950">{ui.contact.addressHeading}</h3>
+          <address class="space-y-1 text-sm not-italic leading-7 text-zinc-600">
+            <p class="font-semibold text-zinc-900">{site.name}</p>
+            {[site.address.street, [site.address.village, site.address.city].filter(Boolean).join(', '), [site.address.province, site.address.country].filter(Boolean).join(', ')].filter((line) => line && line.trim()).map((line) => <p>{line}</p>)}
+          </address>
+        </div>
+        <div class="space-y-4 rounded-xl border border-zinc-200 bg-zinc-50 p-8">
+          <h3 class="text-xl font-bold text-zinc-950">{hoursTitle}</h3>
+          <ul class="space-y-2 text-sm text-zinc-600">
+            {hours.map((hour: string) => <li>{hour}</li>)}
+          </ul>
+        </div>
+      </div>
+      <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-8">
+        <h3 class="mb-6 text-xl font-bold text-zinc-950">{formTitle}</h3>
+        <form id={formId} data-contact-form data-whatsapp={site.whatsapp} data-msg-header={ui.contact.whatsappMessage.header} data-msg-name={ui.contact.whatsappMessage.name} data-msg-company={ui.contact.whatsappMessage.company} data-msg-phone={ui.contact.whatsappMessage.phone} data-msg-service={ui.contact.whatsappMessage.service} data-msg-message={ui.contact.whatsappMessage.message} class="space-y-4">
+          <div>
+            <label for={`${formId}-name`} class="mb-1 block text-sm font-medium text-zinc-700">{ui.contact.fields.name.label}</label>
+            <input id={`${formId}-name`} name="name" type="text" required class="w-full rounded-lg border border-zinc-300 px-4 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder={ui.contact.fields.name.placeholder} />
+          </div>
+          <div>
+            <label for={`${formId}-company`} class="mb-1 block text-sm font-medium text-zinc-700">{ui.contact.fields.company.label}</label>
+            <input id={`${formId}-company`} name="company" type="text" required class="w-full rounded-lg border border-zinc-300 px-4 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder={ui.contact.fields.company.placeholder} />
+          </div>
+          <div>
+            <label for={`${formId}-phone`} class="mb-1 block text-sm font-medium text-zinc-700">{ui.contact.fields.phone.label}</label>
+            <input id={`${formId}-phone`} name="phone" type="tel" required class="w-full rounded-lg border border-zinc-300 px-4 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder={ui.contact.fields.phone.placeholder} />
+          </div>
+          <div>
+            <label for={`${formId}-service`} class="mb-1 block text-sm font-medium text-zinc-700">{ui.contact.fields.service.label}</label>
+            <select id={`${formId}-service`} name="service" required class="w-full rounded-lg border border-zinc-300 px-4 py-2 focus:border-emerald-500 focus:ring-emerald-500">
+              {serviceOptions.map((service: string) => <option value={service}>{service}</option>)}
+            </select>
+          </div>
+          <div>
+            <label for={`${formId}-message`} class="mb-1 block text-sm font-medium text-zinc-700">{ui.contact.fields.message.label}</label>
+            <textarea id={`${formId}-message`} name="message" rows="4" class="w-full rounded-lg border border-zinc-300 px-4 py-2 focus:border-emerald-500 focus:ring-emerald-500" placeholder={ui.contact.fields.message.placeholder}></textarea>
+          </div>
+          <button type="submit" class="w-full rounded-lg bg-emerald-600 py-3 font-medium text-white shadow-sm transition-colors hover:bg-emerald-700">
+            {ui.contact.submitLabel}
+          </button>
+          <p class="text-xs text-zinc-500">{ui.contact.disclaimer}</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const labels = form.dataset;
+      const message = [
+        labels.msgHeader,
+        labels.msgName + ': ' + String(formData.get('name') || ''),
+        labels.msgCompany + ': ' + String(formData.get('company') || ''),
+        labels.msgPhone + ': ' + String(formData.get('phone') || ''),
+        labels.msgService + ': ' + String(formData.get('service') || ''),
+        labels.msgMessage + ': ' + String(formData.get('message') || ''),
+      ].join(String.fromCharCode(10));
+      const phone = form.dataset.whatsapp;
+      if (phone) window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
+    });
+  });
+</script>

@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ArticleCard from './ArticleCard.astro';
+import { ui } from '../../config/ui.ts';
+const { articles = [], relatedIds = [], heading = ui.article.relatedHeading, basePath = '/artikel/', readLabel = ui.article.readMore } = Astro.props as {
+  articles: CollectionEntry<'articles'>[];
+  relatedIds: number[];
+  heading?: string;
+  basePath?: string;
+  readLabel?: string;
+};
+const related = relatedIds
+  .map((id) => articles.find((article) => article.data.id === id && !article.data.draft && article.data.contentType !== 'local-seo'))
+  .filter((article): article is CollectionEntry<'articles'> => Boolean(article));
+---
+{related.length > 0 && (
+  <section class="mx-auto max-w-7xl px-5 pb-12">
+    <h2 class="mb-6 font-display text-2xl font-extrabold text-zinc-950">{heading}</h2>
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {related.map((article) => <ArticleCard article={article} basePath={basePath} readLabel={readLabel} />)}
+    </div>
+  </section>
+)}

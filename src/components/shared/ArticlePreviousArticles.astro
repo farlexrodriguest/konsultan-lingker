@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+const { article, articles = [], limit = 5, basePath = '/artikel/', headingLabel = 'Artikel sebelumnya' } = Astro.props as {
+  article: { data: { id: number; slug: string; draft?: boolean; contentType?: string; title: string; category?: string } };
+  articles: Array<{ data: { id: number; slug: string; draft?: boolean; contentType?: string; title: string; category?: string } }>;
+  limit?: number;
+  basePath?: string;
+  headingLabel?: string;
+};
+
+const previousEntries = articles
+  .filter((item) => !item.data.draft && item.data.contentType !== 'local-seo' && item.data.id < article.data.id)
+  .sort((a, b) => b.data.id - a.data.id)
+  .slice(0, limit);
+---
+{previousEntries.length > 0 && (
+  <section class="mt-8 border-t border-zinc-200 pt-5" aria-labelledby="previous-entries-heading">
+    <h2 id="previous-entries-heading" class="mb-3 text-xs font-bold uppercase tracking-wider text-zinc-500">
+      {headingLabel}
+    </h2>
+    <ol class="space-y-3">
+      {previousEntries.map((item) => (
+        <li class="border-l-2 border-zinc-200 pl-3 transition-colors hover:border-emerald-600">
+          <a
+            href={`${basePath}${item.data.slug}/`}
+            class="text-sm font-semibold leading-5 text-zinc-700 no-underline hover:text-emerald-700"
+          >
+            {item.data.title}
+          </a>
+          {item.data.category && (
+            <p class="mt-1 text-xs text-zinc-500">{item.data.category}</p>
+          )}
+        </li>
+      ))}
+    </ol>
+  </section>
+)}

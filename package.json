@@ -1,0 +1,29 @@
+{
+  "name": "konsultan-lingker",
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "node scripts/generate-social-images.mjs",
+    "typecheck": "astro sync && tsc --noEmit",
+    "build": "node scripts/check-frontmatter-integrity.mjs && node scripts/check-content-dates.mjs && npm run typecheck && astro build && node scripts/check-internal-links.mjs && node scripts/check-seo-output.mjs && node scripts/check-image-alt.mjs && node scripts/check-article-content-output.mjs && node scripts/check-published-content.mjs",
+    "preview": "astro preview",
+    "hooks:install": "git config core.hooksPath .githooks",
+    "content:dates": "node scripts/update-content-dates.mjs",
+    "images:illustration": "node scripts/svg-to-raster.mjs"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "dependencies": {
+    "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
+    "@fontsource-variable/sora": "^5.2.8",
+    "astro": "^7.4.0",
+    "sharp": "^0.34.5",
+    "typescript": "^7.0.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

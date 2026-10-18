@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img">
+  <rect width="600" height="450" rx="28" fill="#fafaf9"/>
+
+  <circle cx="300" cy="205" r="120" fill="#ecfdf5"/>
+  <g transform="translate(230 175)"><circle cx="0" cy="0" r="26" fill="#022c22"/><path d="M-34 60 a 34 34 0 0 1 68 0 Z" fill="#047857"/></g>
+  <g transform="translate(320 150)"><circle cx="0" cy="0" r="30" fill="#fbbf24"/><path d="M-38 66 a 38 38 0 0 1 76 0 Z" fill="#022c22"/></g>
+  <g transform="translate(395 205)"><circle cx="0" cy="0" r="22" fill="#ffffff" stroke="#047857" stroke-width="4"/><path d="M-28 52 a 28 28 0 0 1 56 0 Z" fill="#a7f3d0"/></g>
+  <rect x="210" y="292" width="180" height="8" rx="4" fill="#d4d4d8"/>
+  <rect x="240" y="318" width="150" height="7" rx="3.5" fill="#e4e4e7"/>
+  <rect x="240" y="332" width="130" height="7" rx="3.5" fill="#e4e4e7"/>
+  <g transform="translate(470 110) rotate(18) scale(0.8)">
+  <path d="M0 -34 C 22 -18 26 10 0 34 C -26 10 -22 -18 0 -34 Z" fill="#10b981"/>
+  <line x1="0" y1="-20" x2="0" y2="30" stroke="#022c22" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round"/>
+</g>
+  <g transform="translate(125 120) rotate(-20) scale(0.6)">
+  <path d="M0 -34 C 22 -18 26 10 0 34 C -26 10 -22 -18 0 -34 Z" fill="#fbbf24"/>
+  <line x1="0" y1="-20" x2="0" y2="30" stroke="#022c22" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round"/>
+</g>
+</svg>

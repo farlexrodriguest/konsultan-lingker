@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleCard from './ArticleCard.astro';
+import { ui } from '../../config/ui.ts';
+const { id, heading, description, source = 'article', mode = 'listing', limit = 0, offset = 0 } = Astro.props;
+const isGuideSource = source === 'guide';
+const allEntries = (await getCollection(isGuideSource ? 'guides' : 'articles'))
+  .filter((article) => !article.data.draft && article.data.contentType !== 'local-seo')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || b.data.id - a.data.id);
+const entries = allEntries.slice(Math.max(0, offset), limit > 0 ? Math.max(0, offset) + limit : undefined);
+const basePath = isGuideSource ? '/panduan/' : '/artikel/';
+const readLabel = isGuideSource ? ui.guide.readMore : ui.article.readMore;
+const listLink = isGuideSource ? { label: ui.guide.allGuidesLink, href: '/panduan/' } : { label: ui.article.allArticlesLink, href: '/artikel/' };
+const emptyLabel = isGuideSource ? ui.guide.emptyList : ui.article.emptyList;
+const latestEyebrow = isGuideSource ? ui.guide.latestEyebrow : ui.article.latestEyebrow;
+---
+<section id={id} class={mode === 'latest' ? 'mx-auto max-w-7xl px-5 py-16' : 'mt-10'}>
+  {mode === 'latest' ? <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700">{latestEyebrow}</p><h2 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-zinc-950">{heading}</h2><p class="mt-3 max-w-2xl text-zinc-600">{description}</p></div><a href={listLink.href} class="font-semibold text-emerald-700 hover:text-emerald-900">{listLink.label}</a></div> : <div class="max-w-3xl"><h2 class="font-display text-2xl font-extrabold tracking-tight text-zinc-950">{heading}</h2>{description && <p class="mt-3 leading-7 text-zinc-600">{description}</p>}</div>}
+  {entries.length ? <div class={mode === 'latest' ? 'grid gap-5 md:grid-cols-3' : 'mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3'}>{entries.map((article) => <ArticleCard article={article} headingLevel={mode === 'latest' ? 3 : 2} basePath={basePath} readLabel={readLabel} />)}</div> : <p class="mt-6 rounded-2xl border border-dashed border-zinc-300 p-8 text-zinc-500">{emptyLabel}</p>}
+</section>

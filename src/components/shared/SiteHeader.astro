@@ -1,0 +1,55 @@
+---
+import { ui } from '../../config/ui.ts';
+import { site } from '../../config/site.ts';
+
+export interface Props {
+  variant?: 'default' | 'home';
+  ariaLabel?: string;
+}
+
+const { variant = 'default', ariaLabel = ui.nav.mainAriaLabel } = Astro.props;
+const navItems = variant === 'home' ? ui.nav.items.home : ui.nav.items.primary;
+const cta = variant === 'home' ? ui.nav.cta.default : ui.nav.cta.contact;
+const hasContact = Boolean(site.whatsapp || site.phone);
+---
+<header class="sticky top-0 z-40">
+  {hasContact && (
+    <div class="bg-emerald-950 text-emerald-100">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-2 text-xs font-medium">
+        <p class="hidden items-center gap-2 md:inline-flex">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+          {site.tagline}
+        </p>
+        <div class="flex items-center gap-4">
+          {site.whatsapp && <a class="font-semibold text-emerald-200 no-underline transition hover:text-white" href={`https://wa.me/${site.whatsapp}`}>{ui.contact.whatsappLabel}</a>}
+          {site.phone && <a class="font-semibold text-emerald-200 no-underline transition hover:text-white" href={`tel:${site.phone}`}>{ui.contact.phoneLabel}</a>}
+          {site.email && <a class="hidden font-semibold text-emerald-200 no-underline transition hover:text-white sm:inline" href={`mailto:${site.email}`}>{ui.contact.emailLabel}</a>}
+        </div>
+      </div>
+    </div>
+  )}
+  <div class="border-b border-zinc-200 bg-white/95 backdrop-blur">
+    <nav class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-5 py-3.5" aria-label={ariaLabel}>
+      <a href="/" class="flex items-center gap-2.5 no-underline">
+        <img
+          src="/images/logo-konsultan-lingker.svg"
+          alt={ui.brand.logoAlt}
+          class="h-9 w-auto sm:h-10"
+          width="300"
+          height="60"
+          loading="eager"
+          decoding="async"
+        />
+      </a>
+      <div class="order-3 flex w-full flex-wrap items-center gap-x-4 gap-y-2 border-t border-zinc-100 pt-3 text-sm font-semibold text-zinc-600 md:order-none md:w-auto md:flex-nowrap md:gap-6 md:border-0 md:pt-0">
+        {navItems.map((item) => (
+          <a class="no-underline transition hover:text-emerald-700" href={item.href}>{item.label}</a>
+        ))}
+      </div>
+      <a href={cta.href} class="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white no-underline shadow-sm transition hover:bg-emerald-700">
+        {cta.label}
+        <span class="inline-block h-1.5 w-1.5 rounded-full bg-amber-300" aria-hidden="true"></span>
+      </a>
+    </nav>
+  </div>
+</header>

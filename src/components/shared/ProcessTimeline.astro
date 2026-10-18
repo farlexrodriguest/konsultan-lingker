@@ -1,0 +1,28 @@
+---
+/**
+ * ProcessTimeline — numbered process steps with connecting line.
+ *
+ * Props:
+ * - id: string — anchor id
+ * - title: string — section title
+ * - steps: Array<{title, description}> — process steps
+ *
+ * Usage:
+ * <ProcessTimeline id="proses" title="Alur Pendampingan" steps={[{title: "Konsultasi", description: "..."}, ...]} />
+ */
+const { id, title, steps } = Astro.props as { id: string; title: string; steps: {title: string; description: string}[] };
+---
+<section id={id} class="my-10" aria-labelledby={`${id}-title`}>
+  <h2 id={`${id}-title`} class="text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">{title}</h2>
+  <ol class="mt-6 space-y-5">
+    {steps.map((step: {title: string; description: string}, index: number) => (
+      <li class="relative flex gap-4">
+        <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white" aria-hidden="true">{index + 1}</div>
+        <div class="min-w-0 border-b border-zinc-200 pb-5">
+          <h3 class="mb-1 text-lg font-semibold text-zinc-900">{step.title}</h3>
+          <p class="leading-7 text-zinc-600">{step.description}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>

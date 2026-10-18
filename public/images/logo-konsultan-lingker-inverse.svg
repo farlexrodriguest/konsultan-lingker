@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 60" width="300" height="60" role="img" aria-label="Konsultan Lingker">
+  <g transform="translate(30 30)">
+    <circle r="26" fill="#a7f3d0"/>
+    <path d="M0 -15 C 10 -7 12 10 0 17 C -12 10 -10 -7 0 -15 Z" fill="#022c22"/>
+    <line x1="0" y1="-8" x2="0" y2="13" stroke="#10b981" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+  <text x="68" y="30" font-family="'Sora Variable','Sora',ui-sans-serif,system-ui,sans-serif" font-size="19" font-weight="700" fill="#ffffff">Konsultan</text>
+  <text x="68" y="51" font-family="'Sora Variable','Sora',ui-sans-serif,system-ui,sans-serif" font-size="21" font-weight="700" fill="#a7f3d0">Lingker<tspan fill="#fbbf24">.</tspan></text>
+</svg>

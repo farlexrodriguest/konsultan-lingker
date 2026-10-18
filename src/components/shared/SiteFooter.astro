@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+import { ui } from '../../config/ui.ts';
+import { site } from '../../config/site.ts';
+
+export interface Props {
+  ariaLabel?: string;
+  category?: 'perizinan' | 'laboratorium' | 'k3-lingkungan-kerja' | 'spesialis';
+  serviceTitle?: string;
+}
+
+const { ariaLabel = ui.nav.footerAriaLabel, category, serviceTitle } = Astro.props;
+const year = new Date().getFullYear();
+
+const activeServices = (await getCollection('services'))
+  .filter((s) => !s.data.draft && s.data.status === 'active' && (!category || s.data.serviceCategory === category))
+  .sort((a, b) => a.data.order - b.data.order);
+
+let footerTagline = ui.footer.tagline;
+if (serviceTitle) {
+  footerTagline = `${site.name} menyediakan jasa ${serviceTitle}.`;
+}
+const footerServices = activeServices.slice(0, 7);
+const contactDetails = [
+  site.whatsapp ? { label: ui.contact.whatsappLabel, href: `https://wa.me/${site.whatsapp}` } : null,
+  site.phone ? { label: site.phoneDisplay || ui.contact.phoneLabel, href: `tel:${site.phone}` } : null,
+  site.email ? { label: ui.contact.emailLabel, href: `mailto:${site.email}` } : null,
+].filter((item): item is { label: string; href: string } => item !== null);
+---
+<footer class="bg-emerald-950 text-emerald-50">
+  <div class="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-2 lg:grid-cols-[1.3fr_0.8fr_1fr_1fr]">
+    <div>
+      <a href="/" class="flex items-center gap-2.5 no-underline">
+        <img
+          src="/images/logo-konsultan-lingker-inverse.svg"
+          alt={ui.brand.logoAlt}
+          class="h-10 w-auto"
+          width="300"
+          height="60"
+          loading="eager"
+          decoding="async"
+        />
+      </a>
+      <p class="mt-5 max-w-sm text-sm leading-7 text-emerald-200/90">{footerTagline}</p>
+      <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-emerald-200/90">
+        {contactDetails.map((item) => (
+          <a class="no-underline transition hover:text-white" href={item.href}>{item.label}</a>
+        ))}
+      </div>
+    </div>
+    <nav aria-label={ui.nav.footerAriaLabel}>
+      <h2 class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-300/80">{ui.footer.navigationHeading}</h2>
+      <ul class="mt-4 grid grid-cols-1 gap-y-2.5 text-sm font-medium text-emerald-100 sm:grid-cols-2 lg:grid-cols-1">
+        {ui.nav.items.footer.map((item) => (
+          <li><a class="no-underline transition hover:text-white" href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div>
+      <h2 class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-300/80">{ui.footer.servicesHeading}</h2>
+      {footerServices.length > 0 ? (
+        <ul class="mt-4 space-y-2.5 text-sm text-emerald-200/90">
+          {footerServices.map((service) => (
+            <li><a class="no-underline transition hover:text-white" href={`/layanan/${service.data.slug}/`}>{service.data.title}</a></li>
+          ))}
+        </ul>
+      ) : (
+        <p class="mt-4 text-sm text-emerald-200/70">{ui.services.emptyList}</p>
+      )}
+    </div>
+    <div>
+      <h2 class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-300/80">{ui.footer.contactHeading}</h2>
+      {site.address && <p class="mt-4 text-sm leading-7 text-emerald-200/90">{site.address.full || site.address.street}</p>}
+      <div class="mt-4 space-y-1.5 text-sm text-emerald-200/90">
+        {site.whatsapp && <p><a class="no-underline transition hover:text-white" href={`https://wa.me/${site.whatsapp}`}>{ui.contact.whatsappLabel}: {site.whatsappDisplay}</a></p>}
+        {site.phone && <p><a class="no-underline transition hover:text-white" href={`tel:${site.phone}`}>{ui.contact.phoneLabel}: {site.phoneDisplay}</a></p>}
+        {site.email && <p><a class="no-underline transition hover:text-white" href={`mailto:${site.email}`}>{ui.contact.emailLabel}: {site.email}</a></p>}
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-white/10">
+    <div class="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-xs text-emerald-300/70 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {site.legalName}. Seluruh hak cipta.</p>
+      <p><a href="/legalitas-dan-akreditasi/" class="no-underline transition hover:text-white">{ui.nav.items.footer.find((item) => item.href === '/legalitas-dan-akreditasi/')?.label ?? 'Legalitas'}</a></p>
+    </div>
+  </div>
+</footer>

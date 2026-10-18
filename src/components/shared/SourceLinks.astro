@@ -1,0 +1,17 @@
+---
+const { id, title, intro, items } = Astro.props;
+---
+<section id={id} class="mt-8 scroll-mt-24 rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
+  <h2 id={`${id}-title`} class="text-xl font-extrabold tracking-tight text-zinc-950">{title}</h2>
+  {intro && <p class="mt-3 text-sm leading-7 text-zinc-700">{intro}</p>}
+  <ul class="mt-4 space-y-4">
+    {items.map((item: { label: string; url: string; description?: string }) => (
+      <li>
+        <a href={item.url} target="_blank" rel="noopener noreferrer" class="font-semibold text-sky-800 underline decoration-sky-300 underline-offset-4 hover:text-sky-950">
+          {item.label}
+        </a>
+        {item.description && <p class="mt-1 text-sm leading-6 text-zinc-600">{item.description}</p>}
+      </li>
+    ))}
+  </ul>
+</section>

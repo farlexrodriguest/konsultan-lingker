@@ -1,0 +1,19 @@
+---
+const { eyebrow, heading, intro, image, imageAlt = heading } = Astro.props;
+---
+<header class="rounded-3xl border border-zinc-200 bg-gradient-to-br from-stone-50 via-white to-emerald-50/70 p-7 sm:p-9 lg:p-10">
+  <div class="grid items-center gap-8 md:grid-cols-[1.15fr_0.85fr]">
+    <div class="max-w-2xl">
+      <p class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">
+        <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true"></span>
+        {eyebrow}
+      </p>
+      <h1 class="mt-4 font-display text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">{heading}</h1>
+      <p class="mt-4 text-lg leading-8 text-zinc-600">{intro}</p>
+    </div>
+    <div class="relative">
+      <img src={image} alt={imageAlt} class="mx-auto w-full max-w-md rounded-2xl ring-1 ring-zinc-200/70" width="560" height="420" fetchpriority="high" />
+      <div class="absolute -bottom-3 -left-3 -z-10 h-20 w-20 rounded-full bg-amber-300/40 blur-2xl" aria-hidden="true"></div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import BlockRenderer from '../../components/blocks/BlockRenderer.astro';
+import RelatedArticles from '../../components/shared/RelatedArticles.astro';
+import { ui } from '../../config/ui.ts';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services
+    .filter((service) => !service.data.draft && service.data.status === 'active')
+    .map((service) => ({ params: { slug: service.data.slug }, props: { service } }));
+}
+
+const { service } = Astro.props as { service: CollectionEntry<'services'> };
+const articles = await getCollection('articles');
+const faqItems = service.data.blocks
+  .filter((block) => block.component === 'faq')
+  .flatMap((block) => block.items);
+const faqJsonLd = faqItems.length > 0 ? JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+}).replace(/</g, '\\u003c') : undefined;
+
+---
+<ServiceLayout service={service}>
+  {faqJsonLd && <script slot="head" type="application/ld+json" set:html={faqJsonLd}></script>}
+  <div class="space-y-6">
+    {service.data.blocks.map((block) => <BlockRenderer block={block} />)}
+  </div>
+  <RelatedArticles slot="related" articles={articles} type="service" id={service.data.id} heading={ui.article.relatedHeadingService} />
+</ServiceLayout>

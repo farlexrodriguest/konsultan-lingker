@@ -1,0 +1,29 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlockRenderer from '../components/blocks/BlockRenderer.astro';
+import SiteHeader from '../components/shared/SiteHeader.astro';
+import SiteFooter from '../components/shared/SiteFooter.astro';
+import { validateContentRelations } from '../utils/content-validation';
+
+await validateContentRelations();
+const home = await getEntry('pages', 'home');
+if (!home) throw new Error('Missing "home" page content entry.');
+if (home.data.draft) throw new Error('Page "home" is marked draft but has a statically defined route.');
+---
+<BaseLayout
+  title={home.data.seoTitle ?? home.data.title}
+  description={home.data.description}
+  socialImage={home.data.socialImage}
+  canonical={home.data.canonical}
+  noindex={home.data.noindex}
+  pubDate={home.data.pubDate}
+  updatedDate={home.data.updatedDate}
+  mainEntityId={new URL('/#organization', Astro.site ?? Astro.url).toString()}
+>
+  <SiteHeader variant="home" />
+  <main id="main-content">
+    {home.data.blocks.map((block) => <BlockRenderer block={block} />)}
+  </main>
+  <SiteFooter />
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+/**
+ * Button — styled action button using Tailwind utilities (no DaisyUI).
+ * Props: variant (primary|secondary|ghost|outline), size (sm|md|lg), disabled, type.
+ */
+const variantClasses = {
+  primary: 'bg-emerald-700 text-white hover:bg-emerald-800 focus-visible:outline-emerald-700',
+  secondary: 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200 focus-visible:outline-zinc-600',
+  ghost: 'bg-transparent text-zinc-700 hover:bg-zinc-100 focus-visible:outline-zinc-600',
+  outline: 'border border-zinc-300 bg-white text-zinc-700 hover:bg-zinc-50 focus-visible:outline-zinc-600',
+} as const;
+
+const sizeClasses = {
+  sm: 'px-3 py-1.5 text-sm',
+  md: 'px-4 py-2 text-sm',
+  lg: 'px-6 py-3 text-base',
+} as const;
+
+const { variant = 'primary', size = 'md', disabled = false, type = 'button' } = Astro.props;
+const vClass = variantClasses[variant as keyof typeof variantClasses] ?? variantClasses.primary;
+const sClass = sizeClasses[size as keyof typeof sizeClasses] ?? sizeClasses.md;
+---
+<button
+  type={type}
+  disabled={disabled}
+  class={`inline-flex items-center justify-center rounded-lg font-semibold shadow-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${vClass} ${sClass}`}
+>
+  <slot />
+</button>

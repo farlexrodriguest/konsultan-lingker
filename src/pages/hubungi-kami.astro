@@ -1,0 +1,17 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlockRenderer from '../components/blocks/BlockRenderer.astro';
+import SiteHeader from '../components/shared/SiteHeader.astro';
+import SiteFooter from '../components/shared/SiteFooter.astro';
+const page = await getEntry('pages', 'hubungi-kami');
+if (!page) throw new Error('Missing "hubungi-kami" page content entry.');
+if (page.data.draft) throw new Error('Page "hubungi-kami" is marked draft but has a statically defined route.');
+---
+<BaseLayout title={page.data.seoTitle ?? page.data.title} description={page.data.description} socialImage={page.data.socialImage} canonical={page.data.canonical} noindex={page.data.noindex} pubDate={page.data.pubDate} updatedDate={page.data.updatedDate}>
+  <SiteHeader />
+  <main id="main-content" class="mx-auto max-w-7xl space-y-8 px-5 py-12 sm:py-16">
+    {page.data.blocks.map((block) => <BlockRenderer block={block} />)}
+  </main>
+  <SiteFooter />
+</BaseLayout>
