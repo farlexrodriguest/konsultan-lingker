@@ -25,6 +25,10 @@ a { text-underline-offset: 4px; }
 .prose-content h3 { margin-top: 1.5rem; font-size: 1.25rem; font-weight: 700; }
 .prose-content p, .prose-content li { line-height: 1.85; color: #57534e; }
 
+/* Keep guide CTA text readable inside prose-content. */
+.prose-content .guide-cta h2 { color: #ffffff; }
+.prose-content .guide-cta p { color: #ecfdf5; }
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
